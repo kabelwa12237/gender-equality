@@ -40,4 +40,14 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+        /**
+     * Relationship presented by function
+     */
+
+     /**Get all reports for the User */
+
+    public function Reports(){
+        return $this->morphedToMany(Report::class, 'reportable');
+     }
 }
