@@ -3,16 +3,17 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use App\Models\Organization;
 
-class DatabaseSeeder extends Seeder
+class OrganizationSeeder extends Seeder
 {
     /**
-     * Seed the application's database.
+     * Run the database seeds.
      *
      * @return void
      */
     public function run()
     {
-        $this->call(OrganizationSeeder::class);
+        Organization::factory()->count(10)->create();
     }
 }
