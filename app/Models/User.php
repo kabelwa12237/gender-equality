@@ -32,6 +32,13 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+
+
+    public function Reports()
+    {
+        return $this->morphedToMany(Report::class, 'reportable');
+    }
+
     /**
      * The attributes that should be cast to native types.
      *
