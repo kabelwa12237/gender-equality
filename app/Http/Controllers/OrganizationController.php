@@ -8,13 +8,28 @@ use Illuminate\Http\Request;
 class OrganizationController extends Controller
 {
     /**
+     * creating/declaration Organization variable
+     * create a constructor of organization using instance
+     */
+
+     private $organization;
+    //create a constructor of a model class called or
+       public function __construct(){
+         //initialization object of a model class
+         $this->organization = new Organization();
+     }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
+
     public function index()
     {
-        //
+     return $this->organization->allOrganizations();
+      // return response()->json(['organizations'=>Organization::all()]);
+       
     }
 
     /**
@@ -44,8 +59,9 @@ class OrganizationController extends Controller
      * @param  \App\Models\Organization  $organization
      * @return \Illuminate\Http\Response
      */
-    public function show(Organization $organization)
+    public function show($organizationId)
     {
+        return $this->organization->getOrganization($organizationId);
         //
     }
 
@@ -55,9 +71,10 @@ class OrganizationController extends Controller
      * @param  \App\Models\Organization  $organization
      * @return \Illuminate\Http\Response
      */
-    public function edit(Organization $organization)
+    public function edit(Request $request, $organizationId)
+
     {
-        //
+    return $this->organization->editOrganization($request,$organizationId);    //
     }
 
     /**
@@ -78,8 +95,11 @@ class OrganizationController extends Controller
      * @param  \App\Models\Organization  $organization
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Organization $organization)
+    public function destroy($organizationId)
     {
+        return $this->organization->deleteOrganization($organizationId);
         //
     }
+
+   
 }
