@@ -7,32 +7,30 @@ use Illuminate\Http\Request;
 
 class OrganizationController extends Controller
 {
+
+    //  private Organization $organization;
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
+    //the variable helps to resolve repetition in coding
+    private $organization;
+
+    public function __construct()
+    {
+        $this->organization = new Organization();
+    }
+
+    //this is to get all organizations
     public function index()
     {
-        //
+        return $this->organization->allOrganizations();
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+
+
     public function store(Request $request)
     {
         //
@@ -44,9 +42,9 @@ class OrganizationController extends Controller
      * @param  \App\Models\Organization  $organization
      * @return \Illuminate\Http\Response
      */
-    public function show(Organization $organization)
+    public function show($organizationId)
     {
-        //
+        return $this->organization->getOrganization($organizationId);
     }
 
     /**
@@ -55,10 +53,20 @@ class OrganizationController extends Controller
      * @param  \App\Models\Organization  $organization
      * @return \Illuminate\Http\Response
      */
-    public function edit(Organization $organization)
+    //function that allows to eit one organazation
+    public function edit(Request $request, $organizationId)
     {
-        //
+        return $this->organization->editOrganization($request, $organizationId);
     }
+
+    //function that allows to delete an organization
+    public function delete($organizationId)
+    {
+        return $this->organization->deleteOrganization($organizationId);
+    }
+
+
+
 
     /**
      * Update the specified resource in storage.
