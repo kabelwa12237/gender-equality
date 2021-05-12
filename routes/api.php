@@ -24,6 +24,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
      * these are routes of the organization
      */
 Route::get('organizations',[OrganizationController::class,'index']);    
-Route::get('onlyorganization/{organizationId}',[OrganizationController::class,'show']);
+Route::get('organization/{organizationId}',[OrganizationController::class,'show']);
 Route::put('editorganization/{organizationId}',[OrganizationController::class,'edit']);
 Route::delete('deleteorganization/{organizationId}',[OrganizationController::class,'destroy']);
