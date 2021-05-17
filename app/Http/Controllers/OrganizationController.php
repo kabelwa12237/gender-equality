@@ -39,7 +39,7 @@ class OrganizationController extends Controller
      */
     public function create()
     {
-        //
+        
     }
 
     /**
@@ -100,6 +100,11 @@ class OrganizationController extends Controller
         return $this->organization->deleteOrganization($organizationId);
         //
     }
+    
+    public function post(Request $request){
+        return $this->organization->postOrganization($request);
+    }
 
+    
    
 }

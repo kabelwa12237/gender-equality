@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\Organization;
+use App\Models\Report;
 
 class DatabaseSeeder extends Seeder
 {
@@ -17,5 +18,6 @@ class DatabaseSeeder extends Seeder
         // \App\Models\User::factory(10)->create();
        // \App\Models\Organization::factory()->count(100)->create();
        $this->call(OrganizationSeeder::class);
+       $this->call(ReportSeeder::class);
     }
 }

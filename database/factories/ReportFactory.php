@@ -22,7 +22,10 @@ class ReportFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'body'=>$this->faker->text(),
+            'latitude'=>$this->faker->latitude(),
+            'longitude'=>$this->faker->longitude(),
+            
         ];
     }
 }

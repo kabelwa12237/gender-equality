@@ -6,6 +6,7 @@ use App\Http\Resources\OrganizationResource;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Validator;
 
 class Organization extends Model
 {
@@ -77,4 +78,33 @@ class Organization extends Model
         
     }
 
+    public function postOrganization($request){
+        $validator=Validator::make($request->all(),
+        [
+            'name'=>'required',
+            'type'=>'required',
+            'contact'=>'required',
+            'latitude'=>'required',
+            'longitude'=>'required',
+            'address'=>'required'
+
+        ]);
+
+
+        $organization=new Organization();
+
+        if($validator->fails())
+            return response()->json(['error'=>$validator->errors()],300);
+        Organization::create([
+            'name'=>$request->name,
+            'type'=>$request->type,
+            'contact'=>$request->contact,
+            'latitude'=>$request->latitude,
+            'longitude'=>$request->longitude,
+            'address'=>$request->address,
+        ]);
+        return new OrganizationResource($organization);
+    
+
+}
 }
