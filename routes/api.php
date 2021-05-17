@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\OrganizationController;
+use App\Http\Controllers\ReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,7 +29,24 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 //organization rouutes
 
 Route::get('organizations', [OrganizationController::class, 'index']);
+Route::post('addorganization', [OrganizationController::class, 'create']);
 Route::get('organization/{organizationId}', [OrganizationController::class, 'show']);
 Route::put('editorganization/{organizationId}', [OrganizationController::class, 'edit']);
 
 Route::delete('deleteorganization/{organizationId}', [OrganizationController::class, 'destroy']);
+
+
+
+//reports routes
+
+
+Route::get(
+    'reports',
+    [ReportController::class, 'index']
+);
+Route::post('postReport', [ReportController::class, 'create']);
+
+Route::get('report/{reportId}', [ReportController::class, 'show']);
+Route::put('updateReport/{reportId}', [ReportController::class, 'edit']);
+Route::delete('deletereport/{reportId}', [ReportController::class, 'destroy']);
+Route::get('assignReport/{reportId}/{organizationId}', [ReportController::class, 'assign']);

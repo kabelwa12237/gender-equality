@@ -7,14 +7,22 @@ use Illuminate\Http\Request;
 
 class ReportController extends Controller
 {
-    /**
+
+
+    private $report;
+    public function __construct()
+    {
+        $this->report = new Report();
+    }
+
+    /*
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-    
+        return $this->report->getReports();
     }
 
     /**
@@ -22,9 +30,9 @@ class ReportController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        return $this->report->postReport($request);
     }
 
     /**
@@ -44,9 +52,9 @@ class ReportController extends Controller
      * @param  \App\Models\Report  $report
      * @return \Illuminate\Http\Response
      */
-    public function show(Report $report)
+    public function show(Report $reportId)
     {
-        //
+        return $this->report->getreport($reportId);
     }
 
     /**
@@ -55,11 +63,14 @@ class ReportController extends Controller
      * @param  \App\Models\Report  $report
      * @return \Illuminate\Http\Response
      */
-    public function edit(Report $report)
+    public function edit(Request $request, $reportId)
     {
-        //
+        return $this->report->updateReport($request, $reportId,);
     }
+public function assign($reportId,$organizationId){
 
+    return $this->report->asignReportToOrganization($reportId,$organizationId);
+}
     /**
      * Update the specified resource in storage.
      *
@@ -78,8 +89,8 @@ class ReportController extends Controller
      * @param  \App\Models\Report  $report
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Report $report)
+    public function destroy($reportId)
     {
-        //
+        return $this->report->deleteReport($reportId);
     }
 }

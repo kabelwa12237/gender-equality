@@ -4,9 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-use function PHPSTORM_META\type;
-
-class OrganizationResource extends JsonResource
+class ReportResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -18,13 +16,11 @@ class OrganizationResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->name,
-            'contact' => $this->contact,
-            'type' => $this->type,
+            'body' => $this->body,
+      
             'latitude' => $this->latitude,
             'longitude' => $this->longitude,
-            'address' => $this->address,
-            'report'=>$this->Reports
+        
         ];
     }
 }

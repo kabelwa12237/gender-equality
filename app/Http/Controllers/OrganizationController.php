@@ -19,26 +19,22 @@ public function __construct(){
      */
     public function index()
     {
-        return $this -> organization->allOrganizations();
-
-
-
-
-
-        
+        return $this -> organization->allOrganizations();  
 
         
         // return response()->json(['organizations'=>Organization::all()]);
-    }
+}
+
 
     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        return $this->organization->postOrganization($request);
+
     }
 
     /**
