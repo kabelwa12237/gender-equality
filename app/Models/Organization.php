@@ -6,6 +6,9 @@ use App\Http\Resources\OrganizationResource;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Validator;
+
+use function PHPSTORM_META\type;
 
 class Organization extends Model
 {
@@ -15,7 +18,7 @@ class Organization extends Model
      /**
       * variables
       */
-     protected $fillable = ['name', 'type', 'contact', 'latitude', 'longitude'];
+     protected $fillable = ['name', 'type', 'contact', 'latitude', 'longitude', 'address'];
      protected $dates = ['deleted_at'];
 
      /**
@@ -32,10 +35,14 @@ class Organization extends Model
      }
 
      /**function for pulling data from database */
+
+     /**function for getting all organization */
      public function allOrganizations()
      {
           return OrganizationResource::collection(Organization::all());
      }
+
+ /**function for getting all organization */
 
      public function getOrganization($organizationId)
      {
@@ -66,5 +73,31 @@ class Organization extends Model
                return response()->json(['message' => 'DELETED ID NOT FOUND']);
           $organization->delete();
           return response()->json(['deleted successfully']);
+     }
+     public function postOrganization($request)
+     {
+          $validator = Validator::make($request->all(), [
+               'name' => 'required',
+               'type' => 'required',
+               'contact' => 'required',
+               'latitude' => 'required',
+               'longitude' => 'required',
+               'address' => 'required'
+
+          ]);
+
+          $organization = new Organization();
+
+          if ($validator->fails())
+               return response()->json(['error' => $validator->errors()], 300);
+          Organization::create([
+               'name' => $request->name,
+               'type' => $request->type,
+               'contact' => $request->contact,
+               'latitude' => $request->latitude,
+               'longitude' => $request->longitude,
+               'address' => $request->address
+          ]);
+          return new OrganizationResource($organization);
      }
 }

@@ -7,6 +7,14 @@ use Illuminate\Http\Request;
 
 class ReportController extends Controller
 {
+    private  $report;
+
+    public function __construct()
+
+    {
+        $this->report= new Report();
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +22,7 @@ class ReportController extends Controller
      */
     public function index()
     {
-        //
+        return $this->report->allReports();
     }
 
     /**
@@ -44,9 +52,9 @@ class ReportController extends Controller
      * @param  \App\Models\Report  $report
      * @return \Illuminate\Http\Response
      */
-    public function show(Report $report)
+    public function show($reportId)
     {
-        //
+        return $this->report->getReport($reportId);
     }
 
     /**
@@ -55,11 +63,19 @@ class ReportController extends Controller
      * @param  \App\Models\Report  $report
      * @return \Illuminate\Http\Response
      */
-    public function edit(Report $report)
+    public function edit( request $request,$reportId)
     {
-        //
+        return $this->report->editReport($request, $reportId);
+
     }
 
+public  function delete($reportId) {
+    return $this->report->deleteReport($reportId);
+}
+
+public function assignReport($reportId,$organizationId){
+    return $this->report->assignReportToOrganization($reportId,$organizationId);
+}
     /**
      * Update the specified resource in storage.
      *

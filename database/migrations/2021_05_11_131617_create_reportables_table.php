@@ -18,7 +18,7 @@ class CreateReportablesTable extends Migration
 
              $table->integer('report_id');
              $table->integer('reportable_id');
-             $table->integer('reportable_type');
+             $table->string('reportable_type');
              
             $table->timestamps();
         });

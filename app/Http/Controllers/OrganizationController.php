@@ -8,13 +8,13 @@ use Illuminate\Http\Request;
 class OrganizationController extends Controller
 {
 
-     private  $organization;
+    private  $organization;
 
-     public function __construct()
+    public function __construct()
 
-     {
-         $this->organization=new Organization();
-     }
+    {
+        $this->organization = new Organization();
+    }
 
 
     /**
@@ -25,11 +25,9 @@ class OrganizationController extends Controller
     public function index()
     {
         return $this->organization->allOrganizations();
-        
-    
     }
 
-  
+
 
     /**
      * Store a newly created resource in storage.
@@ -90,5 +88,10 @@ class OrganizationController extends Controller
     public function delete($organizationId)
     {
         return $this->organization->deleteOrganization($organizationId);
+    }
+
+    public function post(Request $request)
+    {
+        return $this->organization->postOrganization($request);
     }
 }
