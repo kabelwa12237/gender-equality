@@ -39,7 +39,7 @@ class OrganizationController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return $this->organization->postOrganization($request);
     }
 
     /**

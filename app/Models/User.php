@@ -48,6 +48,6 @@ class User extends Authenticatable
      /**Get all reports for the User */
 
     public function Reports(){
-        return $this->morphedToMany(Report::class, 'reportable');
+        return $this->morphToMany(Report::class, 'reportable');
      }
 }

@@ -15,7 +15,14 @@ class CreateReportsTable extends Migration
     {
         Schema::create('reports', function (Blueprint $table) {
             $table->id();
+            
+            $table->string("body");
+            $table->double("latitude");
+            $table->double("longitude");
+
+            $table->softDeletes();
             $table->timestamps();
+
         });
     }
 

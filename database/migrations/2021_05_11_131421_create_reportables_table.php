@@ -24,6 +24,7 @@ class CreateReportablesTable extends Migration
         });
     }
 
+
     /**
      * Reverse the migrations.
      *

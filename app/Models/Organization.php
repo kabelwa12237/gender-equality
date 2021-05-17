@@ -6,6 +6,9 @@ use App\Http\Resources\OrganizationResource;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Validator;
+
+
 
 class Organization extends Model
 {
@@ -28,7 +31,7 @@ class Organization extends Model
 
    public function Reports()
    {
-      return $this->morphedToMany(Report::class, 'reportable');
+      return $this->morphToMany(Report::class, 'reportable');
    }
 
    /**
@@ -43,19 +46,19 @@ class Organization extends Model
    }
 
     /**get single Function */
-   public function getOrganization($organizanationId)
+   public function getOrganization($organizationId)
    {
-      $organization = Organization::find($organizanationId);
+      $organization = Organization::find($organizationId);
       if (!$organization) 
-      return response()->json(['Error' => 'Sorry! Table not found'], 404);
+      return response()->json(['Error' => 'Sorry! Organization not found'], 404);
       return new OrganizationResource($organization);
    }
 
    /**Edit Function */
 
-   public function editOrganization($request, $organizanationId)
+   public function editOrganization($request, $organizationId)
    {
-      $organization = Organization::find($organizanationId);
+      $organization = Organization::find($organizationId);
       if (!$organization)
          return response()->json(['Error' => 'Sorry! Table not found'], 404);
 
@@ -67,19 +70,43 @@ class Organization extends Model
 
       /**Delete Function */
 
-      public function deleteOrganization($organizanationId)
+      public function deleteOrganization($organizationId)
       {
-         $organization = Organization::find($organizanationId);
+         $organization = Organization::find($organizationId);
          if (!$organization)
             return response()->json(['Error' => 'Sorry! Table not found'], 404);
    
          /**Delete Function */
-         $organization->destroy($organizanationId);
+         $organization->destroy($organizationId);
          return response()->json(['Hello! Table deleted'], 200);
-
-   
-      
       }
+
+       /**Post Function */
+       public function postOrganization( $request)
+       {
+          $validator = Validator::make($request->all(), [
+             'name'=> 'required',
+             'type'=> 'required',
+             'contact'=>'required',
+             'address'=>'required',
+             'latitude'=>'required',
+             'longitude'=>'required'
+          ]);
+          if($validator->fails()){
+             return response()->json(['error'=>$validator->errors(),'status'=>false],300);
+          }
+
+          $organization=new Organization();
+          $organization->name=$request->name;
+          $organization->contact=$request->contact;
+          $organization->type=$request->type;
+          $organization->address=$request->address;
+          $organization->latitude=$request->latitude;
+          $organization->longitude=$request->longitude;
+          $organization->save();
+
+          return new OrganizationResource($organization);
+       }
 
    
 }
