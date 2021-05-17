@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateReportabblesTable extends Migration
+class CreateReportablesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,11 @@ class CreateReportabblesTable extends Migration
      */
     public function up()
     {
-        Schema::create('reportabbles', function (Blueprint $table) {
+        Schema::create('reportables', function (Blueprint $table) {
             $table->id();
-            $table->int("report_id");
-            $table->string("reportable_id");
+            
+            $table->integer("report_id");
+            $table->integer("reportable_id");
             $table->string("reportable_type");
             
             $table->timestamps();
@@ -30,6 +31,6 @@ class CreateReportabblesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('reportabbles');
+        Schema::dropIfExists('reportables');
     }
 }

@@ -23,6 +23,10 @@ class ReportFactory extends Factory
     {
         return [
             //
+            'body'=> $this->faker->text(),
+            'latitude'=> $this->faker->latitude(),
+            'longitude'=> $this->faker->longitude()
+
         ];
     }
 }
