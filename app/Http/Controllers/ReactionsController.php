@@ -2,19 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Organization;
+use App\Models\Reactions;
 use Illuminate\Http\Request;
 
-class OrganizationController extends Controller
-{ //we declared a variable
-    private $organization;
+class ReactionsController extends Controller
+{
+    private $reaction;
 
-    //initialize the variable  that used to call a create a new instance
     public function __construct()
     {
-        $this->organization = new Organization();
+        $this->reaction = new Reactions();
     }
-    // private Organization $organization;
     /**
      * Display a listing of the resource.
      *
@@ -22,12 +20,8 @@ class OrganizationController extends Controller
      */
     public function index()
     {
-        return $this->organization->allOrganizations();
-
-
-        // return response()->json(['organizations'=>Organization::all()]);
+        return $this->reaction->allReactions();
     }
-
 
     /**
      * Show the form for creating a new resource.
@@ -36,7 +30,7 @@ class OrganizationController extends Controller
      */
     public function create(Request $request)
     {
-        return $this->organization->postOrganization($request);
+        return $this->reaction->postReaction($request);
     }
 
     /**
@@ -53,45 +47,59 @@ class OrganizationController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Organization  $organization
+     * @param  \App\Models\Reactions  $reactions
      * @return \Illuminate\Http\Response
      */
-    public function show($organizationId)
+    public function show($reactionId)
     {
-        return $this->organization->getOrganization($organizationId);
+        return $this->reaction->singleReaction($reactionId);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Organization  $organization
+     * @param  \App\Models\Reactions  $reactions
      * @return \Illuminate\Http\Response
      */
-    public function edit(Request $request, $organizationId)
+    public function edit(Request $request, $reactionId)
     {
-        return $this->organization->editOrganization($request, $organizationId);
+        return $this->reaction->editReaction($request, $reactionId);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Organization  $organization
+     * @param  \App\Models\Reactions  $reactions
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Organization $organization)
+    public function update(Request $request, Reactions $reactions)
     {
         //
     }
 
+    public function assignment($reactionId, $postId)
+    {
+
+        return $this->reaction->assignReactionToPost($reactionId,$postId);
+    }
+
+    public function assign($reactionId, $commentId)
+    {
+
+        return $this->reaction->assignReactionToComment($reactionId,$commentId);
+    }
+    
+    
+
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Organization  $organization
+     * @param  \App\Models\Reactions  $reactions
      * @return \Illuminate\Http\Response
      */
-    public function destroy($organizationId)
+    public function destroy($reactionId)
     {
-        return $this->organization->deleteOrganization($organizationId);
+        return $this->reaction->deleteReaction($reactionId);
     }
 }

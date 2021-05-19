@@ -11,12 +11,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Validator;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 use Psy\Command\EditCommand;
 
-class Report extends Model
+class Report extends Model implements HasMedia
 {
     use HasFactory;
     use SoftDeletes;
+    use InteractsWithMedia;
 
 
     protected $fillable = ['body', 'latitude', 'longitude'];
@@ -75,26 +78,21 @@ class Report extends Model
         $report = new Report();
         $report->latitude = $request->latitude;
         $report->longitude = $request->longitude;
+        
         $report->body = $request->body;
         $report->save();
+
+
+        if ($request->hasFile('media')) {
+            $report
+
+                ->addMedia($request->file('media'))
+                ->toMediaCollection();
+        }
         return new  ReportResources($report);
     }
 
-    // public  function editReport($request, $reportId)
-    // {
 
-    //     $report = Report::find($reportId);
-    //     if (!$report)
-    //         return response()->json(['error' => 'report not found']);
-
-
-    //     $report->update([
-    //         'body' => $request->body,
-    //         'latitude' => $request->latitude,
-    //         'longitude' => $request->longitude,
-    //     ]);
-    //     return new  ReportResources($reportId);
-    // }
 
 
     public function updateReport($request, $reportId)
@@ -112,19 +110,20 @@ class Report extends Model
     }
 
 
-    public function asignReportToOrganization($reportId,$organizationId){
-$report= Report::find($reportId);
-if(!$report)
-return response()->json(['error'=>'report does not found']);
+    public function asignReportToOrganization($reportId, $organizationId)
+    {
+        $report = Report::find($reportId);
+        if (!$report)
+            return response()->json(['error' => 'report does not found']);
 
 
 
-$organization=Organization::find($organizationId);
-if(!$organization)
+        $organization = Organization::find($organizationId);
+        if (!$organization)
 
-return response()->json(['error'=>'organization does not found']);
+            return response()->json(['error' => 'organization does not found']);
 
-$report->Organizations()->attach($organization);
-return new ReportResources($report);
+        $report->Organizations()->attach($organization);
+        return new ReportResources($report);
     }
 }

@@ -28,6 +28,8 @@ return [
     |
     */
 
+    //internal storage
+
     'disks' => [
 
         'local' => [
@@ -38,10 +40,11 @@ return [
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
-            'url' => env('APP_URL').'/storage',
+            'url' => env('APP_URL') . '/storage',
             'visibility' => 'public',
         ],
-
+        //external server 
+        //this will be used if u want to put ur files in another storage/extenal storage
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),

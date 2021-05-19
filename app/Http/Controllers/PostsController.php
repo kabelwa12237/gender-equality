@@ -2,19 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Organization;
+use App\Models\Posts;
 use Illuminate\Http\Request;
 
-class OrganizationController extends Controller
-{ //we declared a variable
-    private $organization;
+class PostsController extends Controller
+{
 
-    //initialize the variable  that used to call a create a new instance
+
+    private $post;
+
     public function __construct()
     {
-        $this->organization = new Organization();
+        $this->post = new Posts();
     }
-    // private Organization $organization;
     /**
      * Display a listing of the resource.
      *
@@ -22,12 +22,8 @@ class OrganizationController extends Controller
      */
     public function index()
     {
-        return $this->organization->allOrganizations();
-
-
-        // return response()->json(['organizations'=>Organization::all()]);
+        return $this->post->allposts();
     }
-
 
     /**
      * Show the form for creating a new resource.
@@ -36,7 +32,7 @@ class OrganizationController extends Controller
      */
     public function create(Request $request)
     {
-        return $this->organization->postOrganization($request);
+        return $this->post->addPost($request);
     }
 
     /**
@@ -53,33 +49,33 @@ class OrganizationController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Organization  $organization
+     * @param  \App\Models\Posts  $posts
      * @return \Illuminate\Http\Response
      */
-    public function show($organizationId)
+    public function show($postId)
     {
-        return $this->organization->getOrganization($organizationId);
+        return $this->post->singleposts($postId);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Organization  $organization
+     * @param  \App\Models\Posts  $posts
      * @return \Illuminate\Http\Response
      */
-    public function edit(Request $request, $organizationId)
+    public function edit(Request $request, $postId)
     {
-        return $this->organization->editOrganization($request, $organizationId);
+        return $this->post->editpost($request, $postId);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Organization  $organization
+     * @param  \App\Models\Posts  $posts
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Organization $organization)
+    public function update(Request $request, Posts $posts)
     {
         //
     }
@@ -87,11 +83,11 @@ class OrganizationController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Organization  $organization
+     * @param  \App\Models\Posts  $posts
      * @return \Illuminate\Http\Response
      */
-    public function destroy($organizationId)
+    public function destroy($postId)
     {
-        return $this->organization->deleteOrganization($organizationId);
+        return $this->post->deletePost($postId);
     }
 }

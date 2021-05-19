@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ReportResources extends JsonResource
+class ReactionResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,12 +16,8 @@ class ReportResources extends JsonResource
     {
         return [
             'id' => $this->id,
-            'body' => $this->body,
-            'latitude' => $this->latitude,
-            'longitude' => $this->longitude,
-
-            'media'=>$this->getMedia(),
-            'organization' => $this->Organizations
+            'reaction_type' => $this->reaction_type,
+            'reaction_emoj' => $this->reaction_emoj,
         ];
     }
 }

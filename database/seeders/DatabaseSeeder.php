@@ -15,14 +15,25 @@ class DatabaseSeeder extends Seeder
     {
         // \App\Models\User::factory(10)->create();
         $this->call(
-            OrganizationSeeder::class, );
+            OrganizationSeeder::class,
+        );
 
         $this->call(
             ReportSeeder::class
-
-
-
         );
 
+        $this->call(
+            UserSeeder::class
+        );
+        $this->call(
+            PostsSeeder::class
+        );
+        $this->call(
+            CommentsSeeder::class
+        );
+
+        $this->call(
+            ReactionsSeeder::class
+        );
     }
 }
