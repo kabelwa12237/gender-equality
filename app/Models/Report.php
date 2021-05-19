@@ -2,18 +2,25 @@
 
 namespace App\Models;
 
+
 use App\Http\Resources\ReportResource;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Validator;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class Report extends Model
+class Report extends Model implements HasMedia
 {
     use HasFactory;
     use SoftDeletes;
+    use InteractsWithMedia;
+
+
     protected $fillable = ['body', 'type', 'latitude', 'longitude'];
     protected $dates = ["deleted at"];
+
     //relationships
     public function users()
     {
@@ -80,6 +87,14 @@ class Report extends Model
 
        $report->save();
 
+
+
+       if($request->hasFile('media')){
+        $report
+        ->addMedia($request->file('media'))
+        ->toMediaCollection();
+       }
+
        return new ReportResource($report);
 
 
@@ -99,7 +114,11 @@ class Report extends Model
         return new ReportResource($report);
 
 
-    }
+    
+}
+
+    
+
 
 
 

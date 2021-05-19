@@ -17,6 +17,14 @@ class DatabaseSeeder extends Seeder
         $this->call(OrganizationSeeder::class);
 
         $this->call(ReportSeeder::class);
+
+        $this->call(UserSeeder::class);
+
+        $this->call(PostSeeder::class);
+
+        $this->call(CommentSeeder::class);
+
+        $this->call(ReactionSeeder::class);
            
     }
 }
