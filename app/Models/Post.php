@@ -41,6 +41,14 @@ class Post extends Model implements HasMedia
         return $this->morphToMany(Comment::class, 'commentable');
     }
 
+        /**
+     * Get the comments for the blog post.
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
 
     /**
      * Business Logic
@@ -91,6 +99,7 @@ class Post extends Model implements HasMedia
     /**Post Function */
     public function postPost($request)
     {
+
         $validator = Validator::make($request->all(), [
             'body' => 'required',
         ]);
@@ -98,14 +107,18 @@ class Post extends Model implements HasMedia
             return response()->json(['error' => $validator->errors(), 'status' => false], 300);
         }
 
+        
+
         $post = new Post();
         $post->body = $request->body;
-        $post->save();
+        
+        auth()->user()->posts()->save($post);
 
         /** */
         if($request->hasFile('media')){
             $post
                ->addMedia($request->file('media'))
+               ->preservingOriginal()
                ->toMediaCollection();
         }
 

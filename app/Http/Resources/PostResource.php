@@ -19,7 +19,7 @@ class PostResource extends JsonResource
             'body' => $this->body,
             'comments'=>$this->comments,
             'reactions'=>$this->reactions,
-            'media'=>$this->getFirstMediaUrl()
+            'media'=>$this->getMedia()
         ];
     }
 }

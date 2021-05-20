@@ -7,6 +7,8 @@ use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ReactionController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\AuthController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -21,6 +23,22 @@ use App\Http\Controllers\ReportController;
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+/**
+ * Aunthentication Routes
+ */
+Route::group([
+
+    'middleware' => 'api',
+    'prefix' => 'auth'
+
+], function ($router) {
+
+    Route::post('login', [AuthController::class, 'login'] );
+    Route::post('logout', [AuthController::class,'logout']);
+    Route::post('refresh', [AuthController::class,'refresh']);
+    Route::post('me', [AuthController::class, 'me']);
 });
 
 
@@ -49,18 +67,27 @@ Route::get('assignreport/{reportId}/{organizationId}', [ReportController::class,
 /**
  * Post Routes
  */
-Route::get('posts', [PostController::class, 'index']);
-Route::post('post', [PostController::class, 'store']);
-Route::get('post/{postId}', [PostController::class, 'show']);
-Route::put('post/{postId}', [PostController::class, 'edit']);
-Route::delete('post/{postId}', [PostController::class, 'destroy']);
+Route::group([
+
+    'middleware' => 'api',
+    'prefix' => 'blog'
+
+], function ($router) {
+
+    Route::get('posts', [PostController::class, 'index']);
+    Route::post('post', [PostController::class, 'store']);
+    Route::get('post/{postId}', [PostController::class, 'show']);
+    Route::put('post/{postId}', [PostController::class, 'edit']);
+    Route::delete('post/{postId}', [PostController::class, 'destroy']);
+});
+
 
 /**
  * Comment Routes
  */
-Route::get('comments',[CommentController::class, 'index']);
-Route::get('comment/{commentId}',[CommentController::class, 'show']);
-Route::put('comment/{commentId}',[CommentController::class, 'edit']);
+Route::get('comments', [CommentController::class, 'index']);
+Route::get('comment/{commentId}', [CommentController::class, 'show']);
+Route::put('comment/{commentId}', [CommentController::class, 'edit']);
 Route::delete('comment/{commentId}', [CommentController::class, 'destroy']);
 /**Assignments */
 Route::post('commentpost/{postId}', [CommentController::class, 'commentPost']);
@@ -70,15 +97,11 @@ Route::post('commentcomment/{commentId}', [CommentController::class, 'commentCom
 /**
  * Reaction Routes
  */
-Route::get('reactions',[ReactionController::class, 'index']);
+Route::get('reactions', [ReactionController::class, 'index']);
 Route::post('reaction', [ReactionController::class, 'store']);
-Route::get('reaction/{reactionId}',[ReactionController::class, 'show']);
-Route::put('reaction/{reactionId}',[ReactionController::class, 'edit']);
+Route::get('reaction/{reactionId}', [ReactionController::class, 'show']);
+Route::put('reaction/{reactionId}', [ReactionController::class, 'edit']);
 Route::delete('reaction/{reactionId}', [ReactionController::class, 'destroy']);
 /**Assignments */
 Route::get('reactpost/{reactionId}/{postId}', [ReactionController::class, 'reactPost']);
 Route::get('reactcomment/{reactionId}/{commentId}', [ReactionController::class, 'reactComment']);
-
-
-
-

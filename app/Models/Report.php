@@ -105,9 +105,10 @@ class Report extends Model implements HasMedia
         $report->longitude = $request->longitude;
         $report->save();
 
-        if($request->hasFile('media')){
+        if($request->hasFile('media_file')){
             $report
-               ->addMedia($request->file('media'))
+               ->addMedia($request->file('media_file'))
+               ->preservingOriginal()
                ->toMediaCollection();
         }
 
