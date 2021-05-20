@@ -17,11 +17,13 @@ class DatabaseSeeder extends Seeder
     {
         // \App\Models\User::factory(10)->create();
        // \App\Models\Organization::factory()->count(100)->create();
+       $this->call(RoleSeeder::class);
        $this->call(OrganizationSeeder::class);
        $this->call(ReportSeeder::class);
        $this->call(UserSeeder::class);
        $this->call(PostSeeder::class);
        $this->call(CommentSeeder::class);
        $this->call(ReactionSeeder::class);
+       
     }
 }
