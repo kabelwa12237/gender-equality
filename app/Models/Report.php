@@ -93,11 +93,11 @@ class Report extends Model
 
         ]);
 
-        $report = new Report();
+        
 
         if ($validator->fails())
             return response()->json(['error' => $validator->errors()], 300);
-        Report::create([
+        $report =Report::create([
 
             'body' => $request->body,
             'latitude' => $request->latitude,

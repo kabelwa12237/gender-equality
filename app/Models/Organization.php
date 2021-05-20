@@ -86,11 +86,11 @@ class Organization extends Model
 
           ]);
 
-          $organization = new Organization();
+         
 
           if ($validator->fails())
                return response()->json(['error' => $validator->errors()], 300);
-          Organization::create([
+         $organization = Organization::create([
                'name' => $request->name,
                'type' => $request->type,
                'contact' => $request->contact,
