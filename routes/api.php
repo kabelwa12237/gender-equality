@@ -1,7 +1,13 @@
 <?php
 
+use App\Http\Controllers\CommentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\OrganizationController;
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\ReactionController;
+use App\Http\Controllers\ReportController;
+use App\Http\Resources\PostResource;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,4 +22,62 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
+  
 });
+
+  /**
+     * these are routes of the organization
+     */
+
+Route::post('organization',[OrganizationController::class,'post']);
+Route::get('organizations',[OrganizationController::class,'index']); 
+Route::get('organization/{organizationId}',[OrganizationController::class,'show']);
+Route::put('editorganization/{organizationId}',[OrganizationController::class,'edit']);
+Route::delete('deleteorganization/{organizationId}',[OrganizationController::class,'destroy']);
+
+/**
+ * These are routes for reports
+ */
+Route::get('reports',[ReportController::class,'index']);
+Route::post('report',[ReportController::class,'post']);
+Route::get('report/{reportId}',[ReportController::class,'show']);
+Route::put('editreport/{reportId}',[ReportController::class,'edit']);
+Route::delete('deletereport/{reportId}',[ReportController::class,'destroy']);
+Route::get('assign/{reportId}/{organizationId}',[ReportController::class,'assignReport']);
+
+
+/**
+ * These are route of post class
+ */
+Route::post('post',[PostController::class,'create']);
+Route::get('posts',[PostController::class,'index']);
+Route::get('post/{postId}',[PostController::class,'show']);
+Route::put('editpost/{postId}',[PostController::class,'edit']);
+Route::delete('deletepost/{postId}',[PostController::class,'destroy']);
+
+
+/**
+ * These are comment routes
+ */
+
+ Route::get('comments',[CommentController::class,'index']);
+ Route::post('postcomment',[CommentController::class,'create']);
+ Route::get('comment/{commentId}',[CommentController::class,'show']);
+ Route::put('editcomment/{commentId}',[CommentController::class,'edit']);
+ Route::delete('deletecomment/{commentId}',[CommentController::class,'destroy']);
+ /**
+  * routes of comments assignment
+  */
+
+  Route::post('commentpost/{postId}',[CommentController::class,'commentPost']);
+  Route::post('commentcomment/{commentId}',[CommentController::class,'commentComment']);
+ /**
+  * These are reaction routes
+  */
+  Route::get('reactions',[ReactionController::class,'index']);
+  Route::post('postreaction',[ReactionController::class,'create']);
+  Route::get('reaction/{reactionId}',[ReactionController::class,'show']);
+  Route::put('editreaction/{reactionId}',[ReactionController::class,'edit']);
+  Route::delete('deletereaction/{reactionId}',[ReactionController::class,'destroy']);
+  Route::get('assignpost/{reactionId}/{postId}',[ReactionController::class,'assignPost']);
+  Route::get('assigncomment/{reactionId}/{commentId}',[ReactionController::class,'assignComment']);
