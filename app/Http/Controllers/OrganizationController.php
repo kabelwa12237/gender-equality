@@ -16,8 +16,6 @@ class OrganizationController extends Controller
         $this->organization = new Organization;
     }
 
-
-
     /**
      * Display a listing of the resource.
      *
@@ -64,18 +62,6 @@ class OrganizationController extends Controller
     {
         //
         return $this->organization->editOrganization($request, $organizationId);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Organization  $organization
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Organization $organization)
-    {
-        //
     }
 
     /**
