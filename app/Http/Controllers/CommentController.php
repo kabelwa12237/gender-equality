@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Report;
+use App\Models\Comment;
 use Illuminate\Http\Request;
 
-class ReportController extends Controller
+class CommentController extends Controller
 {
-    private $report;
+    private $comment;
 
     public function __construct()
     {
-        $this->report=new Report();
+        $this->comment=new Comment();
     }
     /**
      * Display a listing of the resource.
@@ -20,7 +20,7 @@ class ReportController extends Controller
      */
     public function index()
     {
-        return $this->report->allReports();
+        return $this->comment->allComments();
     }
 
     /**
@@ -28,9 +28,9 @@ class ReportController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        return $this->comment->postComment($request);
     }
 
     /**
@@ -47,33 +47,33 @@ class ReportController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Report  $report
+     * @param  \App\Models\Comment  $comment
      * @return \Illuminate\Http\Response
      */
-    public function show($reportId)
+    public function show($commentId)
     {
-        return $this->report->getReport($reportId);
+        return $this->comment->getComment($commentId);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Report  $report
+     * @param  \App\Models\Comment  $comment
      * @return \Illuminate\Http\Response
      */
-    public function edit(Request $request, $reportId)
+    public function edit(Request $request, $commentId)
     {
-    return $this->report->editReport($request,$reportId); 
+        return $this->comment->editComment($request,$commentId);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Report  $report
+     * @param  \App\Models\Comment  $comment
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Report $report)
+    public function update(Request $request, Comment $comment)
     {
         //
     }
@@ -81,17 +81,26 @@ class ReportController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Report  $report
+     * @param  \App\Models\Comment  $comment
      * @return \Illuminate\Http\Response
      */
-    public function destroy($reportId)
+    public function destroy($commentId)
     {
-        return $this->report->deleteReport($reportId);
+        return $this->comment->deleteComment($commentId);
     }
-    public function post(Request $request){
-        return $this->report->postReport($request);
+    /**
+     * comment to post
+     */
+    public function commentPost(Request $request,$postId){
+        return $this->comment->commentToPost($request,$postId);
     }
-    public function assignReport($reportId,$organizationId){
-        return $this->report->assignReportToOrganization($reportId,$organizationId);
+    /**
+     * comment to comment
+     */
+    public function commentComment(Request $request,$commentId){
+        return $this->comment->commentToComment($request,$commentId);
     }
+
+
+  
 }

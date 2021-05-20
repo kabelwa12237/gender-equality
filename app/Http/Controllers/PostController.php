@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Report;
+use App\Models\Post;
 use Illuminate\Http\Request;
 
-class ReportController extends Controller
+class PostController extends Controller
 {
-    private $report;
+    private $post;
 
     public function __construct()
     {
-        $this->report=new Report();
+       $this->post=new Post(); 
     }
     /**
      * Display a listing of the resource.
@@ -20,7 +20,7 @@ class ReportController extends Controller
      */
     public function index()
     {
-        return $this->report->allReports();
+        return $this->post->allPosts();
     }
 
     /**
@@ -28,9 +28,9 @@ class ReportController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        return $this->post->createPost($request);
     }
 
     /**
@@ -47,33 +47,33 @@ class ReportController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Report  $report
+     * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function show($reportId)
+    public function show($postId)
     {
-        return $this->report->getReport($reportId);
+        return $this->post->getPost($postId);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Report  $report
+     * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function edit(Request $request, $reportId)
+    public function edit(Request $request, $postId)
     {
-    return $this->report->editReport($request,$reportId); 
+        return $this->post->editPost($request,$postId);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Report  $report
+     * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Report $report)
+    public function update(Request $request, Post $post)
     {
         //
     }
@@ -81,17 +81,12 @@ class ReportController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Report  $report
+     * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function destroy($reportId)
+    public function destroy($postId)
     {
-        return $this->report->deleteReport($reportId);
+        return $this->post->deletePost($postId);
     }
-    public function post(Request $request){
-        return $this->report->postReport($request);
-    }
-    public function assignReport($reportId,$organizationId){
-        return $this->report->assignReportToOrganization($reportId,$organizationId);
-    }
+    
 }

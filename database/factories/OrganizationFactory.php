@@ -27,7 +27,7 @@ class OrganizationFactory extends Factory
             'contact'=>$this->faker->phoneNumber(),
             'latitude'=>$this->faker->latitude(),
             'longitude'=>$this->faker->longitude(),
-            'address'=>$this->faker->address(),
+            'address'=>$this->faker->address()
             
         ];
     }

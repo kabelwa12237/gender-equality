@@ -2,16 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Report;
+use App\Models\Reaction;
 use Illuminate\Http\Request;
 
-class ReportController extends Controller
+class ReactionController extends Controller
 {
-    private $report;
-
+    private $reaction;
     public function __construct()
     {
-        $this->report=new Report();
+       $this->reaction=new Reaction(); 
     }
     /**
      * Display a listing of the resource.
@@ -20,7 +19,7 @@ class ReportController extends Controller
      */
     public function index()
     {
-        return $this->report->allReports();
+        return $this->reaction->allReactions();
     }
 
     /**
@@ -28,9 +27,9 @@ class ReportController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        return $this->reaction->postReaction($request);
     }
 
     /**
@@ -47,33 +46,33 @@ class ReportController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Report  $report
+     * @param  \App\Models\Reaction  $reaction
      * @return \Illuminate\Http\Response
      */
-    public function show($reportId)
+    public function show($reactionId)
     {
-        return $this->report->getReport($reportId);
+        return $this->reaction->getReaction($reactionId);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Report  $report
+     * @param  \App\Models\Reaction  $reaction
      * @return \Illuminate\Http\Response
      */
-    public function edit(Request $request, $reportId)
+    public function edit(Request $request,$reactionId)
     {
-    return $this->report->editReport($request,$reportId); 
+        return $this->reaction->editReaction($request,$reactionId);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Report  $report
+     * @param  \App\Models\Reaction  $reaction
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Report $report)
+    public function update(Request $request, Reaction $reaction)
     {
         //
     }
@@ -81,17 +80,18 @@ class ReportController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Report  $report
+     * @param  \App\Models\Reaction  $reaction
      * @return \Illuminate\Http\Response
      */
-    public function destroy($reportId)
+    public function destroy($reactionId)
     {
-        return $this->report->deleteReport($reportId);
+        return $this->reaction->deleteReaction($reactionId);
     }
-    public function post(Request $request){
-        return $this->report->postReport($request);
-    }
-    public function assignReport($reportId,$organizationId){
-        return $this->report->assignReportToOrganization($reportId,$organizationId);
-    }
+
+  public function assignPost($reactionId,$postId){
+      return $this->reaction->assignReactionToPost($reactionId,$postId);
+  }
+  public function assignComment($reactionId,$commentId){
+      return $this->reaction->assignReactionToComment($reactionId,$commentId);
+  }
 }

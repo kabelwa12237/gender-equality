@@ -9,11 +9,16 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Validator;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+;
 
-class Report extends Model
+class Report extends Model  implements HasMedia
+
 {
     use HasFactory;
     use SoftDeletes;
+    use InteractsWithMedia;
 
 /**
  * variables
@@ -78,22 +83,26 @@ protected $dates=['deleted_at'];
         [
             'body'=>'required',
             'latitude'=>'required',
-            'longitude'=>'required',
-            
+            'longitude'=>'required'
+              ]);
 
-        ]);
-
-
-        $report=new Report();
-
-        if($validator->fails())
+      if($validator->fails())
             return response()->json(['error'=>$validator->errors()],300);
-        Report::create([
-            'body'=>$request->body,
-            'latitude'=>$request->latitude,
-            'longitude'=>$request->longitude,
-            
-        ]);
+
+            $report=new Report();
+            $report->body=$request->body;
+            $report->latitude=$request->latitude;
+            $report->longitude=$request->longitude;
+            $report->save();
+            /**
+             * Checking if file exists
+             */
+        if($request->hasFile('media_file')){
+           $report
+             ->addMedia($request->file('media_file'))
+             ->preservingOriginal()
+             ->toMediaCollection();
+            }
         return new ReportResource($report);
     }
 
