@@ -19,7 +19,7 @@ class Posts extends Model implements HasMedia
     protected $fillable = ['body'];
     protected $dates = ['deleted_at'];
 
-    //relation
+    //relation of post and reaction
 
 
 
@@ -27,7 +27,7 @@ class Posts extends Model implements HasMedia
     {
         return $this->morphToMany(Reactions::class, 'reactionable');
     }
-
+//relation of post and comment
 
 
     public function Comments()
@@ -35,6 +35,12 @@ class Posts extends Model implements HasMedia
         return $this->morphToMany(Comments::class, 'commentable');
     }
 
+    //relation of post and user
+
+
+    public function user(){
+        return $this->belongsTo(User::class );
+    }
     public function allPosts()
     {
         return PostsResource::collection(Posts::all());
@@ -62,12 +68,13 @@ class Posts extends Model implements HasMedia
         //first way to add
         $post = new Posts();
         $post->body = $request->body;
-        $post->save();
+        auth()->user()->posts()->save($post);
 
         if ($request->hasFile('media')) {
-            $post
-
-                ->addMedia($request->file('media'))
+         
+         
+         //add media
+            $post->addMedia($request->file('media'))
                 ->toMediaCollection();
 
         

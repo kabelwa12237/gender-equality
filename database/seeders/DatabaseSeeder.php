@@ -18,6 +18,12 @@ class DatabaseSeeder extends Seeder
             OrganizationSeeder::class,
         );
 
+
+
+        $this->call(
+            RoleSeeder::class
+        );
+
         $this->call(
             ReportSeeder::class
         );
@@ -35,5 +41,6 @@ class DatabaseSeeder extends Seeder
         $this->call(
             ReactionsSeeder::class
         );
+
     }
 }

@@ -23,6 +23,7 @@ class PostsFactory extends Factory
     {
         return [
             'body' => $this->faker->text(),
+            'user_id' => $this->faker->randomDigit()
         ];
     }
 }
