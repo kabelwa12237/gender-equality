@@ -13,11 +13,11 @@ class CreateReportablesTable extends Migration
      */
     public function up()
     {
-        Schema::create('_reportables', function (Blueprint $table) {
+        Schema::create('reportables', function (Blueprint $table) {
             $table->id();
 
-            $table->int("report_id");
-            $table->int("reportable_id");
+            $table->integer("report_id");
+            $table->integer("reportable_id");
             $table->string("reportable_type");
 
             $table->timestamps();

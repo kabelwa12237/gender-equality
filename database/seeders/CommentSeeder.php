@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\Report;
+use App\Models\Comment;
 use Illuminate\Database\Seeder;
 
-class ReportSeeder extends Seeder
+class CommentSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,7 +14,7 @@ class ReportSeeder extends Seeder
      */
     public function run()
     {
-        Report::factory()->count(10)->create();
+        Comment::factory()->count(10)->create();
 
     }
 }

@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Organization;
+use App\Models\Post;
 use Illuminate\Http\Request;
 
-class OrganizationController extends Controller
+class PostController extends Controller
 {
+    private  $post;
 
-   private  $organization;
-   public function __construct()
-   {
-       $this->organization = new Organization();
-   }
-    
+    public function __construct()
+    {
+      $this->middleware('auth:api', ['except' => ['login']]);
+      $this->post=new Post();
+    }
     /**
      * Display a listing of the resource.
      *
@@ -21,9 +21,7 @@ class OrganizationController extends Controller
      */
     public function index()
     {
-        // return response()->json(['organizations'=>Organization::all()]
-        return $this->organization->allOrganizations();
-    
+        return $this->post->allPosts();
     }
 
     /**
@@ -44,39 +42,39 @@ class OrganizationController extends Controller
      */
     public function store(Request $request)
     {
-        return $this->organization->postOrganization($request);
+      return  $this->post->createPosts($request);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Organization  $organization
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($organizationId)
+    public function show($postId)
     {
-      return $this->organization->getOrganization($organizationId);  
+        return $this->post->getPost($postId);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Organization  $organization
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Request $request,$organizationId)
+    public function edit($id)
     {
-        return $this->organization->editOrganization($request,$organizationId);
+        //
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Organization  $organization
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Organization $organization)
+    public function update(Request $request, $id)
     {
         //
     }
@@ -84,11 +82,17 @@ class OrganizationController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Organization  $organization
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($organizationId)
+    public function destroy($id)
     {
-        return $this->organization->deleteOrganization($organizationId);  
+        //
+    }
+
+
+    ////post media to post
+    public function postMediaToPost(Request $request){
+        return $this->post->postPosts($request);
     }
 }

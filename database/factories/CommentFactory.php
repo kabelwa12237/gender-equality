@@ -2,17 +2,17 @@
 
 namespace Database\Factories;
 
-use App\Models\Report;
+use App\Models\Comment;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class ReportFactory extends Factory
+class CommentFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = Report::class;
+    protected $model = Comment::class;
 
     /**
      * Define the model's default state.
@@ -22,9 +22,8 @@ class ReportFactory extends Factory
     public function definition()
     {
         return [
-            'body'=>$this->faker->realText(),   
-            'latitude'=>$this->faker->latitude(),
-            'longitude'=>$this->faker->longitude(),
+            'body'=>$this->faker->realText(),
+        
         ];
     }
 }

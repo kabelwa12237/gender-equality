@@ -2,18 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Report;
+use App\Models\Reaction;
+use Database\Seeders\ReactionSeeder;
 use Illuminate\Http\Request;
 
-class ReportController extends Controller
+class ReactionController extends Controller
 {
-    private  $report;
+    private $reaction;
     public function __construct()
     {
-        $this->report = new Report();
+       $this->reaction = new Reaction();
     }
-     
-
     /**
      * Display a listing of the resource.
      *
@@ -21,7 +20,7 @@ class ReportController extends Controller
      */
     public function index()
     {
-        return $this->report->allReports();
+        $this->reaction->allReactions();
     }
 
     /**
@@ -42,54 +41,65 @@ class ReportController extends Controller
      */
     public function store(Request $request)
     {
-        return $this->report->postReport($request);
-
+        return $this->reaction->createReaction($request);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Report  $report
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($reportId)
+    public function show($reactionId)
     {
-        return $this->report->getReport($reportId);  
+        return $this->reaction->getReaction($reactionId);
 
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Report  $report
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Request $request,$reportId)
+    public function edit(Request $request,$reactionId)
     {
-        return $this->report->editReport($request,$reportId);
+        return $this->reaction->editReaction($request,$reactionId);
+
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Report  $report
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Report $report)
+    public function update(Request $request, $reactionId)
     {
-        //
+        return $this->reaction->editReaction($request,$reactionId);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Report  $report
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($reportId)
+    public function destroy($reactionId)
     {
-        return $this->report->deleteReport($reportId);  
+        return $this->reaction->deleteReaction($reactionId);
+
+    }
+
+    public function attachReactionToPost($reactionId,$postId)
+    {
+        return $this->reaction->attachReactionToPost($reactionId,$postId);
+
+    }
+    public function attachReactionToComment($reactionId,$commentId)
+    {
+        return $this->reaction->attachReactionToComment($reactionId,$commentId);
 
     }
 }

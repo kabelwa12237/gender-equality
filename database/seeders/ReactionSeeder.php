@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\Report;
+use App\Models\Reaction;
 use Illuminate\Database\Seeder;
 
-class ReportSeeder extends Seeder
+class ReactionSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,7 +14,6 @@ class ReportSeeder extends Seeder
      */
     public function run()
     {
-        Report::factory()->count(10)->create();
-
+        Reaction::factory()->count(10)->create();
     }
 }
