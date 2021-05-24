@@ -30,6 +30,16 @@ class Post extends Model implements HasMedia
     protected $fillable=['body'];
     protected $dates=["deleted_at"];
 
+
+
+    /**
+     * Get the post that owns the comment.
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
     /**
      * functions to get,edit,delete postd
      */
@@ -73,7 +83,8 @@ class Post extends Model implements HasMedia
             
             $post=new Post();
             $post->body=$request->body;
-            $post->save();
+          
+            auth()->user()->posts()->save($post);
        
             /**
              * check for file media

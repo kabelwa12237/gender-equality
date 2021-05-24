@@ -7,6 +7,7 @@ use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ReactionController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\AuthController;
 use App\Http\Resources\PostResource;
 
 /*
@@ -19,11 +20,30 @@ use App\Http\Resources\PostResource;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+/**
+ * These are authentication route
+ */
+
+Route::group([
+
+  'middleware' => 'api',
+  'prefix' => 'auth'
+
+], function ($router) {
+
+  Route::post('login', [AuthController::class,'login']);
+  Route::post('logout', [AuthController::class,'logout']);
+  Route::post('refresh', [AuthController::class,'refresh']);
+  Route::post('me', [AuthController::class,'me']);
+
+});
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
   
 });
+
+
 
   /**
      * these are routes of the organization
