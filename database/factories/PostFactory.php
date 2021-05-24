@@ -23,7 +23,7 @@ class PostFactory extends Factory
     {
         return [
             'body'=>$this->faker->text(),
-           
+           'user_Id'=>$this->faker->randomDigit(),
         ];
     }
 }

@@ -69,14 +69,16 @@ public function postComment($request)
          
      ]);
 
-     
 
      if ($validator->fails())
           return response()->json(['error' => $validator->errors()], 300);
      $comment=Comment::create([
           'body' => $request->body,
+          'user_id'=>auth()->user()->id,
           
      ]);
+
+     
      return new CommentResource($comment);
 
 

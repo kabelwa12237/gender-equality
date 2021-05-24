@@ -14,6 +14,7 @@ class PostController extends Controller
 
     {
         $this->post = new Post();
+        // $this->middleware('auth:api', ['except' => ['login']]);
     }
 
 

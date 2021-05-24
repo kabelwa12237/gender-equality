@@ -5,8 +5,10 @@ use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ReactionController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Namshi\JOSE\JWT;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,6 +27,23 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 });
 
+/***Authentication Routes */
+
+Route::group([
+
+    // 'middleware' => 'api',
+    // 'namespace' => 'App\Http\Controllers',
+    'prefix' => 'auth'
+
+], function ($router) {
+
+    Route::post('login', [AuthController::class,'login']);
+    Route::post('logout',[AuthController::class,'logout']);
+    Route::post('refresh', [AuthController::class,'refresh']);
+    Route::post('register', [AuthController::class,'register']);
+    Route::post('me', [AuthController::class,'me']);
+
+});
 
 
 
@@ -54,6 +73,15 @@ Route::delete('report/{reportId}',[ReportController::class , 'delete']);
 Route::get('assign/{reportId}/{organizationId}',[ReportController::class , 'assignReport']);
 
 /***Routes for Post */
+
+Route::group([
+
+    'middleware' => 'auth.JWT',
+    'namespace' => 'App\Http\Controllers',
+    'prefix' => 'blog'
+
+], function ($router) {
+
 Route::post('post',[PostController::class , 'create']);
 
 Route::get('posts',[PostController::class,'index']);
@@ -66,7 +94,12 @@ Route::put('post/{postId}',[PostController::class , 'edit']);
 
 Route::delete('post/{postId}',[PostController::class , 'delete']);
 
+});
+
+
 /***Routes for comment */
+
+
 
 Route::post('comment',[CommentController::class , 'create']);
 
@@ -103,7 +136,5 @@ Route::delete('reaction/{reactionId}',[ReactionController::class , 'delete']);
 Route::get('reaction/{postId}',[ReactionController::class , 'assignPost']);
 
 Route::get('reaction/{commentId}',[ReactionController::class , 'assignComment']);
-
-
 
 

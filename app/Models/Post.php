@@ -19,8 +19,15 @@ class Post extends Model
     protected $dates = ['deleted_at'];
 
 
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
+
+
 public function reactions(){
     return $this->morphToMany(Reaction::class,'reactionables');
+
+
 }
 
 
@@ -68,10 +75,10 @@ public function reactions(){
 
          if ($validator->fails())
               return response()->json(['error' => $validator->errors()], 300);
-        $post= Post::create([
-              'body' => $request->body,
-              
-         ]);
+        $post= new Post();
+        $post->body = $request->body;
+        
+        
          return new PostResource($post);
     }
 }
