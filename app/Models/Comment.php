@@ -13,6 +13,11 @@ class Comment extends Model
     use HasFactory;
     use SoftDeletes;
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
     public function reactions(){
         return $this->morphToMany(Reaction::class, 'reactionable'); 
     }
@@ -32,7 +37,7 @@ class Comment extends Model
   //  }
 
 
-    protected $fillable=['body'];
+    protected $fillable=['body','user_id'];
     protected $dates=['deleted_at'];
 
     /**
@@ -92,6 +97,7 @@ class Comment extends Model
 
             $comment = new Comment();
             $comment->body=$request->body;
+            $comment->user_id=auth()->user()->id;
             $comment->save();
             $comment->posts()->attach($post);
             return new CommentResource($comment);
@@ -114,6 +120,7 @@ class Comment extends Model
 
             $newComment = new Comment();
             $newComment->body=$request->body;
+            $newComment->user_id=auth()->user()->id;
             $newComment->save();
             $newComment->comments()->attach($comment); 
          return new CommentResource($newComment);

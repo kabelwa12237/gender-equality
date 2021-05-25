@@ -9,6 +9,8 @@ use App\Http\Controllers\ReactionController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\AuthController;
 use App\Http\Resources\PostResource;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -35,6 +37,7 @@ Route::group([
   Route::post('logout', [AuthController::class,'logout']);
   Route::post('refresh', [AuthController::class,'refresh']);
   Route::post('me', [AuthController::class,'me']);
+  Route::post('register', [AuthController::class,'register']);
 
 });
 
@@ -69,11 +72,21 @@ Route::get('assign/{reportId}/{organizationId}',[ReportController::class,'assign
 /**
  * These are route of post class
  */
+Route::group([
+
+ 'middleware' => 'auth.jwt',
+  'prefix' => 'blog'
+
+], function ($router) {
 Route::post('post',[PostController::class,'create']);
 Route::get('posts',[PostController::class,'index']);
 Route::get('post/{postId}',[PostController::class,'show']);
 Route::put('editpost/{postId}',[PostController::class,'edit']);
 Route::delete('deletepost/{postId}',[PostController::class,'destroy']);
+
+});
+
+
 
 
 /**
@@ -81,7 +94,7 @@ Route::delete('deletepost/{postId}',[PostController::class,'destroy']);
  */
 
  Route::get('comments',[CommentController::class,'index']);
- Route::post('postcomment',[CommentController::class,'create']);
+// Route::post('postcomment',[CommentController::class,'create']);
  Route::get('comment/{commentId}',[CommentController::class,'show']);
  Route::put('editcomment/{commentId}',[CommentController::class,'edit']);
  Route::delete('deletecomment/{commentId}',[CommentController::class,'destroy']);
@@ -89,8 +102,8 @@ Route::delete('deletepost/{postId}',[PostController::class,'destroy']);
   * routes of comments assignment
   */
 
-  Route::post('commentpost/{postId}',[CommentController::class,'commentPost']);
-  Route::post('commentcomment/{commentId}',[CommentController::class,'commentComment']);
+  Route::post('commentpost/{postId}',[CommentController::class,'commentPost'])->middleware('auth.jwt');
+  Route::post('commentcomment/{commentId}',[CommentController::class,'commentComment'])->middleware('auth.jwt');
  /**
   * These are reaction routes
   */
@@ -101,3 +114,24 @@ Route::delete('deletepost/{postId}',[PostController::class,'destroy']);
   Route::delete('deletereaction/{reactionId}',[ReactionController::class,'destroy']);
   Route::get('assignpost/{reactionId}/{postId}',[ReactionController::class,'assignPost']);
   Route::get('assigncomment/{reactionId}/{commentId}',[ReactionController::class,'assignComment']);
+
+
+
+ //route to verify email
+ Route::get('/email/verify', function () {
+  return view('auth.verify-email');
+})->middleware('auth')->name('verification.notice');
+
+// email verification handler
+
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+  $request->fulfill();
+return redirect('/home');
+})->middleware(['auth', 'signed'])->name('verification.verify');
+
+// resend link to verify email
+Route::post('/email/verification-notification', function (Request $request) {
+  $request->user()->sendEmailVerificationNotification();
+
+  return back()->with('message', 'Verification link sent!');
+})->middleware(['auth', 'throttle:6,1'])->name('verification.send');

@@ -2,8 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rules\Unique;
 
 class AuthController extends Controller
 {
@@ -14,7 +19,7 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-    $this->middleware('auth:api', ['except' => ['login']]);
+    $this->middleware('auth:api', ['except' => ['login','register']]);
     }
  
     /**
@@ -75,5 +80,36 @@ class AuthController extends Controller
             'token_type' => 'bearer',
             'expires_in' => auth()->factory()->getTTL() * 60
         ]);
+    }
+    public function register(Request $request)
+    {
+
+    $validator=Validator::make($request->all(),
+        ['email'=>'required|email|Unique:users',
+        'password'=>'required|max:8',
+        'name'=>'required']);
+
+      
+     if($validator->fails())
+            return response()->json(['error'=>$validator->errors()],300);
+
+            $user=User::create([
+                'name'=>$request->name,
+                'email'=>$request->email,
+              // 'password'=>$request->Hash::make($request->password)
+               'password'=>Hash::make($request->password)
+               
+
+            ]);
+            return response()->json(['message' => 'Successfully registered out']);
+
+            event(new Registered($user));//
+
+            $token = auth()->login($user);//token creation
+           // $user->sendEmailVerificationNotification();
+
+           
+            
+    
     }
 }

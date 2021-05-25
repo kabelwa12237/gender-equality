@@ -12,7 +12,7 @@ class PostController extends Controller
     public function __construct()
     {
        $this->post=new Post(); 
-       $this->middleware('auth:api', ['except' => ['index']]);
+      // $this->middleware('blog:api', ['except' => ['index']]);
     }
     /**
      * Display a listing of the resource.
