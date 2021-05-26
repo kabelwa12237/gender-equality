@@ -17,7 +17,7 @@ class Post extends Model implements HasMedia
     use InteractsWithMedia;
 
     public function reactions(){
-      return $this->morphToMany(Reaction::class, 'reactionable'); 
+      return $this->morphMany(Reaction::class, 'reactionable'); 
   }
 
   public function comments(){
@@ -43,8 +43,8 @@ class Post extends Model implements HasMedia
     /**
      * functions to get,edit,delete postd
      */
-    public function allPosts(){
-        return PostResource::collection(Post::all());
+    public function allPosts($limit){
+        return PostResource::collection(Post::all()->take($limit)->sortDesc());
         }
 
         /**
@@ -75,7 +75,7 @@ class Post extends Model implements HasMedia
         return response()->json(['message'=>"post deleted successfully"]);
           }
 
-      public function createPost($request){
+      public function postPost($request){
         $validator=Validator::make($request->all(), ['body'=>'required']);
 
          if($validator->fails())

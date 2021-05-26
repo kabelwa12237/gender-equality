@@ -19,7 +19,7 @@ class Comment extends Model
     }
 
     public function reactions(){
-        return $this->morphToMany(Reaction::class, 'reactionable'); 
+        return $this->morphMany(Reaction::class, 'reactionable'); 
     }
 
     public function posts()

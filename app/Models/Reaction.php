@@ -17,17 +17,11 @@ class Reaction extends Model
     use SoftDeletes;
 
 
-    public function posts()
-    {
-        return $this->morphedByMany(Post::class, 'reactionable');
-    }
+   public function reactionables(){
+       return $this->morphTo();
+   }
 
-    public function comments()
-    {
-        return $this->morphedByMany(Comment::class, 'reactionable');
-    }
-
-    protected $fillable=['type','emoji'];
+    protected $fillable=['type','emoji','reactionable_id','reactionable_type'];
     protected $dates=['deleted_at'];
 
     public function allReactions(){
@@ -67,6 +61,8 @@ class Reaction extends Model
         $reaction=new Reaction();
         $reaction->type=$request->type;
         $reaction->emoji=$request->emoji;
+        $reaction->user_id=auth()->user->id;
+       
         $reaction->save();
     // Comment::create(['body'=>$request->body]);
     return new ReactionResource($reaction);
@@ -75,14 +71,24 @@ class Reaction extends Model
       * react to a post
       */
 
-     public function assignReactionToPost($reactionId,$postId){
-        $reaction = Reaction::find($reactionId);
-       if(!$reaction)
-        return response()->json(['message'=>"reaction does not exist"]);
-         $post = Post::find($postId);
+     public function assignReactionToPost($request,$postId){
+        $post=Post::find($postId);
     if(!$post){
         return response()->json(['message'=>"post does not exist"]);}
-    $reaction->posts()->attach($post);
+
+        $validator=Validator::make($request->all(),
+        ['type'=>'required','emoji'=>'required']); 
+
+        
+        if($validator->fails())
+        return response()->json(['error'=>$validator->errors()],300);
+        $reaction=new Reaction();
+        $reaction->type=$request->type;
+        $reaction->emoji=$request->emoji;
+        $reaction->user_id=auth()->user()->id;
+        $post->reactions()->save($reaction);
+    
+    
     return new ReactionResource($reaction);
 }
 /**
@@ -95,7 +101,7 @@ public function assignReactionToComment($reactionId,$commentId){
      $comment = Comment::find($commentId);
 if(!$comment){
     return response()->json(['message'=>"post does not exist"]);}
-$reaction->comments()->attach($comment);
+$reaction->reactionables()->attach($comment);
 return new ReactionResource($reaction);
 }
 
