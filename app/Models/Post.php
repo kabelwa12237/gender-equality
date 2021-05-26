@@ -43,8 +43,8 @@ class Post extends Model implements HasMedia
     /**
      * functions to get,edit,delete postd
      */
-    public function allPosts(){
-        return PostResource::collection(Post::all());
+    public function allPosts($limit){
+        return PostResource::collection(Post::all()->take($limit)->sortDesc());
         }
 
         /**

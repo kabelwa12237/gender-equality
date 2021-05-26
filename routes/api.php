@@ -79,7 +79,7 @@ Route::group([
 
 ], function ($router) {
 Route::post('post',[PostController::class,'create']);
-Route::get('posts',[PostController::class,'index']);
+Route::get('posts/{limit}',[PostController::class,'index']);
 Route::get('post/{postId}',[PostController::class,'show']);
 Route::put('editpost/{postId}',[PostController::class,'edit']);
 Route::delete('deletepost/{postId}',[PostController::class,'destroy']);
@@ -117,7 +117,7 @@ Route::delete('deletepost/{postId}',[PostController::class,'destroy']);
 
 
 
- //route to verify email
+ /** 
  Route::get('/email/verify', function () {
   return view('auth.verify-email');
 })->middleware('auth')->name('verification.notice');
@@ -134,4 +134,4 @@ Route::post('/email/verification-notification', function (Request $request) {
   $request->user()->sendEmailVerificationNotification();
 
   return back()->with('message', 'Verification link sent!');
-})->middleware(['auth', 'throttle:6,1'])->name('verification.send');
+})->middleware(['auth', 'throttle:6,1'])->name('verification.send');*/
