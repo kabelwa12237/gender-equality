@@ -7,27 +7,40 @@ use Illuminate\Http\Request;
 
 class OrganizationController extends Controller
 {
+    /**
+     * creating/declaration Organization variable
+     * create a constructor of organization using instance
+     */
 
-    private  $organization;
-
-    public function __construct()
-
-    {
-        $this->organization = new Organization();
-    }
-
+     private $organization;
+    //create a constructor of a model class called or
+       public function __construct(){
+         //initialization object of a model class
+         $this->organization = new Organization();
+     }
 
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+
+    public function getAllOrganizations()
     {
-        return $this->organization->allOrganizations();
+     return $this->organization->allOrganizations();
+      // return response()->json(['organizations'=>Organization::all()]);
+       
     }
 
-
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -46,9 +59,10 @@ class OrganizationController extends Controller
      * @param  \App\Models\Organization  $organization
      * @return \Illuminate\Http\Response
      */
-    public function show($organizationId)
+    public function getOrganization($organizationId)
     {
         return $this->organization->getOrganization($organizationId);
+        //
     }
 
     /**
@@ -57,9 +71,10 @@ class OrganizationController extends Controller
      * @param  \App\Models\Organization  $organization
      * @return \Illuminate\Http\Response
      */
-    public function edit(request $request, $organizationId)
+    public function editOrganization(Request $request, $organizationId)
+
     {
-        return $this->organization->editOrganization($request, $organizationId);
+    return $this->organization->editOrganization($request,$organizationId);    //
     }
 
     /**
@@ -80,18 +95,16 @@ class OrganizationController extends Controller
      * @param  \App\Models\Organization  $organization
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Organization $organization)
-    {
-        //
-    }
-
-    public function delete($organizationId)
+    public function deleteOrganization($organizationId)
     {
         return $this->organization->deleteOrganization($organizationId);
+        //
     }
-
-    public function post(Request $request)
-    {
+    
+    public function postOrganization(Request $request){
         return $this->organization->postOrganization($request);
     }
+
+    
+   
 }

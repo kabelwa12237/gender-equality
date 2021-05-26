@@ -23,12 +23,12 @@ class OrganizationFactory extends Factory
     {
         return [
             'name'=>$this->faker->company(),
-            'type'=>$this->faker->randomElement(['IT','POLICE','NGOS']),
+            'type'=>$this->faker->randomElement(["IT","police","usaid","div"]),
             'contact'=>$this->faker->phoneNumber(),
             'latitude'=>$this->faker->latitude(),
             'longitude'=>$this->faker->longitude(),
-            'address'=>$this->faker->state(),
-
+            'address'=>$this->faker->address()
+            
         ];
     }
 }

@@ -2,12 +2,16 @@
 
 namespace App\Exceptions;
 
+use Facade\FlareClient\Http\Response;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Exceptions\TokenExpiredException;
 use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 
 use Throwable;
+use Tymon\JWTAuth\Exceptions\JWTException;
+use Tymon\JWTAuth\Exceptions\TokenExpiredException;
+use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 
 class Handler extends ExceptionHandler
 {
@@ -38,30 +42,24 @@ class Handler extends ExceptionHandler
      */
     public function register()
     {
-        // $this->reportable(function (Throwable $e) {
-        //     //
-        // });
+       // $this->reportable(function (Throwable $e) {
+            //
+      //  });
 
-$this->renderable(function(TokenInvalidException $e, $request){
+        $this->renderable(function (TokenInvalidException $e,$request){
+            return response()->json(['error'=>'token Invalid'],401);
 
-    return response()->json(['error'=>'InvalidToken'],401);
-   
-});
+        });
 
-$this->renderable(function(TokenExpiredException $e, $request){
+        $this->renderable(function (TokenExpiredException $e,$request){
+            return response()->json(['error'=>'token has Expired'],401);
 
-    return response()->json(['error'=>'ExpiredToken'],401);
-   
-});
+        });
+        $this->renderable(function (JWTException $e,$request){
+            return response()->json(['error'=>'token not parsed'],401);
 
-
-$this->renderable(function(JWTException $e, $request){
-
-    return response()->json(['error'=>'TokenNotParsed'],401);
-
-   
-   
-});
-
+        });
     }
+
+    
 }

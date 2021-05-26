@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\Reaction;
 use Illuminate\Database\Seeder;
+use App\Models\Reaction;
 
 class ReactionSeeder extends Seeder
 {
@@ -14,6 +14,6 @@ class ReactionSeeder extends Seeder
      */
     public function run()
     {
-        Reaction::factory()->count(30)->create();
+        Reaction::factory()->count(20)->create();
     }
 }

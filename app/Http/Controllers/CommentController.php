@@ -7,20 +7,18 @@ use Illuminate\Http\Request;
 
 class CommentController extends Controller
 {
-    private  $comment;
+    private $comment;
 
     public function __construct()
-
     {
-        $this->comment = new Comment();
+        $this->comment=new Comment();
     }
-
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function getAllComments()
     {
         return $this->comment->allComments();
     }
@@ -30,7 +28,7 @@ class CommentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $request)
+    public function postComment(Request $request)
     {
         return $this->comment->postComment($request);
     }
@@ -52,7 +50,7 @@ class CommentController extends Controller
      * @param  \App\Models\Comment  $comment
      * @return \Illuminate\Http\Response
      */
-    public function show(Comment $commentId)
+    public function getComment($commentId)
     {
         return $this->comment->getComment($commentId);
     }
@@ -63,7 +61,7 @@ class CommentController extends Controller
      * @param  \App\Models\Comment  $comment
      * @return \Illuminate\Http\Response
      */
-    public function edit(Request $request, $commentId)
+    public function editComment(Request $request, $commentId)
     {
         return $this->comment->editComment($request,$commentId);
     }
@@ -86,15 +84,23 @@ class CommentController extends Controller
      * @param  \App\Models\Comment  $comment
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Comment $comment)
+    public function deleteComment($commentId)
     {
-        //
+        return $this->comment->deleteComment($commentId);
+    }
+    /**
+     * comment to post
+     */
+    public function commentPost(Request $request,$postId){
+        return $this->comment->commentToPost($request,$postId);
+    }
+    /**
+     * comment to comment
+     */
+    public function commentComment(Request $request,$commentId){
+        return $this->comment->commentToComment($request,$commentId);
     }
 
-    
 
-    public function delete($commentId)
-    {
-        return $this->comment->deletecomment($commentId);
-    }
+  
 }

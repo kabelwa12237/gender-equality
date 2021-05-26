@@ -8,96 +8,104 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Validator;
 
-use function PHPSTORM_META\type;
-
 class Organization extends Model
 {
+    use HasFactory;
+    use SoftDeletes;
+    /**
+     * These are variables
+     * Business logic 
+     */
+    protected $table = 'organizations';
+    protected $fillable=[
+        'name','type','contact','latitude','longitude','address'];
+    protected $dates=["deleted_at"];
 
-     use HasFactory;
-     use SoftDeletes;
-     /**
-      * variables
-      */
-     protected $fillable = ['name', 'type', 'contact', 'latitude', 'longitude', 'address'];
-     protected $dates = ['deleted_at'];
+    /**
+     * NOW we create ralationships between report and an organization
+     
+     */
 
-     /**
-      * relationship
-      */
+    public function reports(){
+        return $this->morphToMany(Report::class, 'reportable'); 
+    }
+     
+    /**
+     
+     
+     * Business logic::retrieve data from database::getting data from the database 
+     * organizations refers to data from organization
+     */
+    public function allOrganizations(){
+        return OrganizationResource::collection(Organization::all());
+        
+    }
 
-     /**shows the relations btn userd snd report using intermeadite table 'rechable'
-      * this organization morphtomany reports thru reportables
-      */
+    //method to display a specific organization
+    public function getOrganization($organizationId){
+        $organization=Organization::find($organizationId);
+        if(!$organization){
+            return response()->json(['message'=>"organization does not exist"]);
 
-     public function reports()
-     {
-          return $this->morphToMany(Report::class, 'reportable');
-     }
+    }
+        return new OrganizationResource($organization);
+        
+    }
+    public function editOrganization($request,$organizationId){
+        $organization=Organization::find($organizationId);
+        if(!$organization)
+            return response()->json(['message'=>"organization does not exist"]);
 
-     /**function for pulling data from database */
+    // here we found and start editing
+        $organization->update([
+            'name'=>$request->name,
+            'type'=>$request->type,
+            'contact'=>$request->contact,
+            'latitude'=>$request->latitude,
+            'longitude'=>$request->longitude,
+            'address'=>$request->address
+            ]);
+        return new OrganizationResource($organizationId);
+        
+    }
 
-     /**function for getting all organization */
-     public function allOrganizations()
-     {
-          return OrganizationResource::collection(Organization::all());
-     }
+    public function deleteOrganization($organizationId){
+        $organization=Organization::find($organizationId);
+        if(!$organization)
+            return response()->json(['message'=>"organization does not exist"]);
 
- /**function for getting all organization */
+    $organization->destroy($organizationId);
+        return response()->json(["message"=>"organization deleted successfully"]);
+        
+    }
 
-     public function getOrganization($organizationId)
-     {
+    public function postOrganization($request){
+        $validator=Validator::make($request->all(),
+        [
+            'name'=>'required',
+            'type'=>'required',
+            'contact'=>'required',
+            'latitude'=>'required',
+            'longitude'=>'required',
+            'address'=>'required'
 
-          $organization = Organization::find($organizationId);
-          if (!$organization)
-               return response()->json(['message' => 'PAGE NOT FOUND']);
-          return new OrganizationResource($organization);
-     }
-
-     /**function of editing */
-     public function editOrganization($request, $organizationId)
-     {
-          $organization = Organization::find($organizationId);
-          if (!$organization) return response()->json(['message' => 'PAGE NOT FOUND']);
+        ]);
 
 
-          /**editing */
-          $organization->update(['name' => $request->name]);
-          return new OrganizationResource($organization);
-     }
+        $organization=new Organization();
 
-     public function deleteOrganization($organizationId)
-     {
+        if($validator->fails())
+            return response()->json(['error'=>$validator->errors()],300);
+        Organization::create([
+            'name'=>$request->name,
+            'type'=>$request->type,
+            'contact'=>$request->contact,
+            'latitude'=>$request->latitude,
+            'longitude'=>$request->longitude,
+            'address'=>$request->address,
+        ]);
+        return new OrganizationResource($organization);
+    
 
-          $organization = Organization::find($organizationId);
-          if (!$organization)
-               return response()->json(['message' => 'DELETED ID NOT FOUND']);
-          $organization->delete();
-          return response()->json(['deleted successfully']);
-     }
-     public function postOrganization($request)
-     {
-          $validator = Validator::make($request->all(), [
-               'name' => 'required',
-               'type' => 'required',
-               'contact' => 'required',
-               'latitude' => 'required',
-               'longitude' => 'required',
-               'address' => 'required'
-
-          ]);
-
-         
-
-          if ($validator->fails())
-               return response()->json(['error' => $validator->errors()], 300);
-         $organization = Organization::create([
-               'name' => $request->name,
-               'type' => $request->type,
-               'contact' => $request->contact,
-               'latitude' => $request->latitude,
-               'longitude' => $request->longitude,
-               'address' => $request->address
-          ]);
-          return new OrganizationResource($organization);
-     }
+}
 }

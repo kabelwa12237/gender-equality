@@ -8,6 +8,7 @@ use JWTAuth;
 
 class JWTMiddleware
 {
+   // use JWTAuth;
     /**
      * Handle an incoming request.
      *
@@ -17,7 +18,7 @@ class JWTMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        $user=JWTAuth::parseToken()->authenticate();
+        $user= JWTAuth::parseToken()->authenticate();
         return $next($request);
     }
 }

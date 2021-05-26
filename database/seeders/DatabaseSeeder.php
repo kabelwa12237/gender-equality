@@ -4,6 +4,8 @@ namespace Database\Seeders;
 
 use App\Models\Post;
 use Illuminate\Database\Seeder;
+use App\Models\Organization;
+use App\Models\Report;
 
 class DatabaseSeeder extends Seeder
 {
@@ -14,15 +16,15 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        //\App\Models\User::factory(10)->create();
-        $this->call(OrganizationSeeder::class);
-        $this->call(ReportSeeder::class);
-        $this->call(RoleSeeder::class);
-        $this->call(UserSeeder::class);
-        $this->call(PostSeeder::class);
-        $this->call(CommentSeeder::class);
-        $this->call(ReactionSeeder::class);
-        
-        
+        // \App\Models\User::factory(10)->create();
+       // \App\Models\Organization::factory()->count(100)->create();
+       $this->call(RoleSeeder::class);
+       $this->call(OrganizationSeeder::class);
+       $this->call(ReportSeeder::class);
+       $this->call(UserSeeder::class);
+       $this->call(PostSeeder::class);
+       $this->call(CommentSeeder::class);
+       $this->call(ReactionSeeder::class);
+       
     }
 }

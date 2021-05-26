@@ -2,126 +2,128 @@
 
 namespace App\Models;
 
+use App\Events\ReportSubmitted;
+use App\Http\Controllers\OrganizationController;
+use App\Http\Resources\OrganizationResource;
 use App\Http\Resources\ReportResource;
-use GuzzleHttp\Psr7\Request;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Validator;
-use PhpParser\Node\Stmt\Return_;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+;
 
-class Report extends Model
+class Report extends Model  implements HasMedia
+
 {
     use HasFactory;
     use SoftDeletes;
+    use InteractsWithMedia;
 
-    /**variable */
-    protected $fillable = ['body', 'latitude', 'longitude'];
-    protected $dates = ['deleted_at'];
+/**
+ * variables
+ */
+
+protected $fillable=['body','latitude','longitude'];
+protected $dates=['deleted_at'];
 
 
-    /**
-     * 
-     * Get all of the users that are assigned this report.
-     */
+
     public function users()
     {
-        return $this->morphedByMany(user::class, 'reportable');
+        return $this->morphedByMany(User::class, 'reportable');
     }
 
-    /**
-     * Get all of the organization that are assigned this report.
-     */
+
     public function organizations()
     {
         return $this->morphedByMany(Organization::class, 'reportable');
     }
 
-    public function allReports()
-    {
-        return  ReportResource::collection(Report::all());
+    public function allReports(){
+        return ReportResource::collection(Report::all());
     }
 
-    /**function for showing one report */
+    public function getReport($reportId){
+        $report=Report::find($reportId);
+        if(!$report){
+            return response()->json(['message'=>"report does not exist"]);
 
-    public function getReport($reportId)
-    {
-        $report = Report::find($reportId);
-        if (!$reportId)
-            return response()->json(['message' => 'PAGE NOT FOUND']);
+            }
         return new ReportResource($report);
-    }
-
-
-    /**function for editing */
-    public function editReport($request, $reportId)
-    {
-
-        $report = Report::find($reportId);
-
-        if (!$reportId)
-            return response()->json(['message' => 'NOT FOUND']);
-
-        /**editing */
-
-        $report->update(['body' => $request->body, 'longitude' => $request->longitude, 'latitude' => $request->latitude]);
-        return new ReportResource($report);
-    }
-
-    /** DELETING FUNCTION  */
-
-    public function deleteReport($reportId)
-    {
-        $reportId = Report::find($reportId);
-
-        if (!$reportId)
-            return response()->json(['message' => ' TO BE DELETED ID NOT FOUND']);
-
-        /**DELETING */
-
-        $reportId->delete();
-        return response()->json(['message' => 'DELETED SUCCESSFUL']);
-    }
-
-    public function postOrganization($request)
-    {
-        $validator = Validator::make($request->all(), [
-            'body' => 'required',
-            'latitude' => 'required',
-            'longitude' => 'required'
-
-
-        ]);
-
         
+    }
 
-        if ($validator->fails())
-            return response()->json(['error' => $validator->errors()], 300);
-        $report =Report::create([
+    public function editReport($request,$reportId){
+        $report = Report::find($reportId);
+        if(!$report)
+            return response()->json(['message'=>"report does not exist"]);
 
-            'body' => $request->body,
-            'latitude' => $request->latitude,
-            'longitude' => $request->longitude
+    // here we found and start editing
+        $report->update([
+            'body'=>$request->body,
+            'latitude'=>$request->latitude,
+            'longitude'=>$request->longitude,
+            ]);
+        return new ReportResource($reportId);
+        
+    }
 
-        ]);
+    public function deleteReport($reportId){
+        $report=Report::find($reportId);
+        if(!$report)
+            return response()->json(['message'=>"report does not exist"]);
+
+    $report->destroy($reportId);
+        return response()->json(["message"=>"report deleted successfully"]);
+        
+    }
+    public function postReport($request){
+        $validator=Validator::make($request->all(),
+        [
+            'body'=>'required',
+            'latitude'=>'required',
+            'longitude'=>'required'
+              ]);
+
+      if($validator->fails())
+            return response()->json(['error'=>$validator->errors()],300);
+
+            $report=new Report();
+            $report->body=$request->body;
+            $report->latitude=$request->latitude;
+            $report->longitude=$request->longitude;
+            $report->save();
+            event(new ReportSubmitted($report));
+            /**
+             * Checking if file exists
+             */
+        if($request->hasFile('media_file')){
+           $report
+             ->addMedia($request->file('media_file'))
+             ->preservingOriginal()
+             ->toMediaCollection();
+            }
         return new ReportResource($report);
     }
 
+    public function assignReportToOrganization($reportId,$organizationId){
+            $report = Report::find($reportId);
+        if(!$report){
+            return response()->json(['message'=>"report does not exist"]);}
+            
 
-    public function assignReportToOrganization($reportId, $organizationId)
-    {
-
-        $report = Report::find($reportId);
-        if (!$reportId)
-            return response()->json(['message' => 'report not found']);
-
-
-        $organization = Organization::find($organizationId);
-        if (!$organizationId)
-            return response()->json(['message'=>'organization not found']);
-
+           $organization = Organization::find($organizationId);
+        if(!$organization){
+            return response()->json(['message'=>"organization does not exist"]);}
+        
 
         $report->organizations()->attach($organization);
         return new ReportResource($report);
+
+      
+
     }
+
 }

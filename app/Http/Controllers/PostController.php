@@ -7,26 +7,21 @@ use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
-
-    private  $post;
+    private $post;
 
     public function __construct()
-
     {
-        $this->post = new Post();
-        // $this->middleware('auth:api', ['except' => ['login']]);
+       $this->post=new Post(); 
+      // $this->middleware('blog:api', ['except' => ['index']]);
     }
-
-
-
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function getAllPosts($limit)
     {
-        return $this->post->allPosts();
+        return $this->post->allPosts($limit);
     }
 
     /**
@@ -34,13 +29,22 @@ class PostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $request)
+    public function postPost(Request $request)
     {
-        
-        return $this->post->postPost($request);
-    }
-    
+        return $this->post->createPost($request);
 
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        //
+    }
 
     /**
      * Display the specified resource.
@@ -48,10 +52,9 @@ class PostController extends Controller
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function show(Post $postId)
+    public function getPost($postId)
     {
         return $this->post->getPost($postId);
-        
     }
 
     /**
@@ -60,19 +63,32 @@ class PostController extends Controller
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function edit(request $request ,$postId)
+    public function editPost(Request $request, $postId)
     {
         return $this->post->editPost($request,$postId);
     }
 
-    
-   
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Post  $post
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, Post $post)
+    {
+        //
+    }
 
-
-    public function delete($postId)
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Models\Post  $post
+     * @return \Illuminate\Http\Response
+     */
+    public function deletePost($postId)
     {
         return $this->post->deletePost($postId);
     }
-
+    
 }
-

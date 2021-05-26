@@ -14,24 +14,23 @@ class RoleSeeder extends Seeder
      */
     public function run()
     {
+        Role::create([
+            'name'=>'Author',
+            'description'=>'permission to write and read'
+           ]);
+
+        Role::create([
+            'name'=>'Editor',
+            'description'=>'permission to write and read and edit'
+           ]);
+        Role::create([
+            'name'=>'Administrator',
+            'description'=>'This is the system administrator'
+           ]);
+        Role::create([
+            'name'=>'User',
+            'description'=>'permission to write and read and comment'
+           ]);
         
-          
-        Role::create([
-            'name' => 'Admin',
-            'description' => 'system expert',
-        ]);
-
-        Role::create([
-            'name' => 'User',
-            'description' => 'system expert',
-        ]);
-
-        Role::create([
-            'name' => 'Guest ',
-            'description' => 'system expert',
-        ]);
-
-        // Role::factory()->count(3)->create();
     }
-    }
-
+}

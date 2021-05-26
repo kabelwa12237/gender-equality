@@ -8,7 +8,6 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
-
 class User extends Authenticatable implements JWTSubject,MustVerifyEmail
 {
 
@@ -48,7 +47,44 @@ class User extends Authenticatable implements JWTSubject,MustVerifyEmail
         'name',
         'email',
         'password',
+        
     ];
+    /**
+     * Get the posts
+     */
+
+    public function posts()
+    {
+        return $this->hasMany(Post::class);
+    }
+     
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
+    
+
+
+     /**
+     * Get the identifier that will be stored in the subject claim of the JWT.
+     *
+     * @return mixed
+     */
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    /**
+     * Return a key value array, containing any custom claims to be added to the JWT.
+     *
+     * @return array
+     */
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
 
     /**
      * The attributes that should be hidden for arrays.
@@ -61,6 +97,15 @@ class User extends Authenticatable implements JWTSubject,MustVerifyEmail
     ];
 
     /**
+     * The roles that belong to the user.
+     */
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class);
+    }
+
+
+    /**
      * The attributes that should be cast to native types.
      *
      * @var array
@@ -70,6 +115,7 @@ class User extends Authenticatable implements JWTSubject,MustVerifyEmail
         
     ];
 
+<<<<<<< HEAD
 
     
     public function reports (){
@@ -95,5 +141,11 @@ class User extends Authenticatable implements JWTSubject,MustVerifyEmail
 public function comments(){
     return $this->hasMany(Comment::class);
 }
+=======
+    public function reports(){
+        return $this->morphToMany(Report::class, 'reportable'); 
+    }
+     
+>>>>>>> 50988b1035610265acbf77507073775ab1e47a98
 
 }
