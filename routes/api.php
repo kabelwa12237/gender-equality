@@ -78,11 +78,11 @@ Route::group([
   'prefix' => 'blog'
 
 ], function ($router) {
-Route::post('post',[PostController::class,'postPost']);
-Route::get('posts/{limit}',[PostController::class,'getAllPosts']);
-Route::get('post/{postId}',[PostController::class,'getPost']);
-Route::put('editpost/{postId}',[PostController::class,'editPost']);
-Route::delete('deletepost/{postId}',[PostController::class,'deletePost']);
+Route::post('post',[PostController::class,'create']);
+Route::get('posts/{limit}',[PostController::class,'index']);
+Route::get('post/{postId}',[PostController::class,'show']);
+Route::put('editpost/{postId}',[PostController::class,'edit']);
+Route::delete('deletepost/{postId}',[PostController::class,'destroy']);
 
 });
 
@@ -117,10 +117,10 @@ Route::delete('deletepost/{postId}',[PostController::class,'deletePost']);
 
 
 
- //route to verify email
-// Route::get('/email/verify', function () {
-  //return view('auth.verify-email');
-//})->middleware('auth')->name('verification.notice');
+
+//  Route::get('/email/verify', function () {
+//   return view('auth.verify-email');
+// })->middleware('auth')->name('verification.notice');
 
 // email verification handler
 
@@ -133,5 +133,5 @@ Route::delete('deletepost/{postId}',[PostController::class,'deletePost']);
 //Route::post('/email/verification-notification', function (Request $request) {
  //$request->user()->sendEmailVerificationNotification();
 
-  //return back()->with('message', 'Verification link sent!');
-//})->middleware(['auth', 'throttle:6,1'])->name('verification.send');
+//   return back()->with('message', 'Verification link sent!');
+// })->middleware(['auth', 'throttle:6,1'])->name('verification.send');

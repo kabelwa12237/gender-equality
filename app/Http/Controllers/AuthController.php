@@ -93,20 +93,18 @@ class AuthController extends Controller
      if($validator->fails())
             return response()->json(['error'=>$validator->errors()],300);
 
-            $user=User::create([
-                'name'=>$request->name,
-                'email'=>$request->email,
-              // 'password'=>$request->Hash::make($request->password)
-               'password'=>Hash::make($request->password)
-               
-
+        $user=User::create([
+            'name'=>$request->name,
+            'email'=>$request->email,
+            'password'=>Hash::make($request->password)
             ]);
+
             return response()->json(['message' => 'Successfully registered out']);
 
-            event(new Registered($user));//
+            // event(new Registered($user));//event registerd to 
 
-            $token = auth()->login($user);//token creation
-           // $user->sendEmailVerificationNotification();
+            $token = auth()->login($user); //token creation
+           
 
            
             
