@@ -16,7 +16,12 @@ class ReactionResource extends JsonResource
     {
         // return parent::toArray($request);
         return[
-            "body"=>$this->body
+            "id"=>$this->id,
+            "user_id"=>$this->user_id,
+            "reactionable_id"=>$this->reactionable_id,
+            "reactionable_type"=>$this->reactionable_type,
+            "type"=>$this->type,
+            "emoji"=>$this->emoji,
         ];
     }
 }

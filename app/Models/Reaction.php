@@ -16,21 +16,29 @@ class Reaction extends Model
     /**
      * variable
      */
-    //    protected $fillable = [
-    //    ];
+       protected $fillable = [
+        "type","emoji"
+       ];
        protected $dates = ["deleted_at"];
    
 
     /**
      * relationships
      */
-   public function posts(){
-     return $this->morphedByMany(Post::class,'reactionable');
-   }
-   public function comments(){
-    return $this->morphedByMany(Comment::class,'reactionable');
-  }
-     
+  //  public function posts(){
+  //    return $this->morphedByMany(Post::class,'reactionable');
+  //  }
+  //  public function comments(){
+  //   return $this->morphedByMany(Comment::class,'reactionable');
+  // }
+  // public function user(){
+  //   return $this->morphedByMany(Comment::class,'reactionable');
+  // } 
+  public function reactionable(){
+    return $this->morphTo();
+  } 
+
+
      /**
   * functions or operation
   */
@@ -49,21 +57,21 @@ return ReactionResource::collection(Reaction::all());
   return new reactionResource($reaction);
 }
 
-  //post a reaction fn
-  public function createReaction($request){
-$validator = Validator::make($request->all(),[
-'type'=>'required',
-'emoji'=>'required'
-]);
-if($validator->fails())
-return response()->json(['error'=>$validator->errors()],300);
-$reaction = new Reaction();
-$reaction->type = $request->type;
-$reaction->emoji = $request->emoji;
-$reaction->save();
+//   //post a reaction fn
+// public function createReaction($request){
+// $validator = Validator::make($request->all(),[
+// 'type'=>'required',
+// 'emoji'=>'required'
+// ]);
+// if($validator->fails())
+// return response()->json(['error'=>$validator->errors()],300);
+// $reaction = new Reaction();
+// $reaction->type = $request->type;
+// $reaction->emoji = $request->emoji;
+// $reaction->save();
 
-return new ReactionResource($reaction); 
-  }
+// return new ReactionResource($reaction); 
+//   }
 
   //edit a reaction fn
   public function editReaction($request,$reactionId)
@@ -90,18 +98,27 @@ return new ReactionResource($reaction);
   }
 
 
-public function assignReactionToPost($reactionId,$postId){
-$reaction = Reaction::find($reactionId);
-if(!$reaction)
-return response()->json([
-  'message'=>'Reaction not found'
-]);
-$post = Post::find($postId);
+public function assignReactionToPost($request,$postId){
+  $post = Post::find($postId);
 if(!$post)
 return response()->json([
   'message'=>'Post not found'
 ]);
-$reaction->posts->attach($post);
+$reaction = new Reaction();
+
+
+$validator = Validator::make($request->all(),[
+  'type'=>'required',
+  'emoji'=>'required'
+  ]);
+  if($validator->fails())
+  return response()->json(['error'=>$validator->errors()],300);
+  $reaction = new Reaction();
+  $reaction->type = $request->type;
+  $reaction->emoji = $request->emoji;
+  $reaction->user_id= auth()->user()->id;
+  
+$reaction->reactions->save($reaction);
 return new ReactionResource($reaction);
 
 }
@@ -116,7 +133,7 @@ if(!$comment)
 return response()->json([
   'message'=>'Comment not found'
 ]);
-$reaction->comments->attach($comment);
+$reaction->reactionable->attach($comment);
 return new ReactionResource($reaction);
 }
 

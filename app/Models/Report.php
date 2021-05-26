@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Models;
+
+use App\Events\ReportSubmitted;
 use App\Http\Resources\ReportResource;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -75,6 +77,7 @@ public function users(){
     $report->latitude = $request->latitude;
     $report->longitude = $request->longitude;
     $report->save();
+    event(new ReportSubmitted($report));
     ///check if there is file and add to a media
 if($request->hasFile('media_file')){
   $report

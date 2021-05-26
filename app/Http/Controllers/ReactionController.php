@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 class ReactionController extends Controller
 {
     private $reaction;
+    
     public function __construct()
     {
        $this->reaction = new Reaction();
@@ -41,7 +42,7 @@ class ReactionController extends Controller
      */
     public function store(Request $request)
     {
-        return $this->reaction->createReaction($request);
+        // return $this->reaction->createReaction($request);
     }
 
     /**
@@ -92,9 +93,9 @@ class ReactionController extends Controller
 
     }
 
-    public function attachReactionToPost($reactionId,$postId)
+    public function attachReactionToPost(Request $request,$postId)
     {
-        return $this->reaction->attachReactionToPost($reactionId,$postId);
+        return $this->reaction->attachReactionToPost($postId,$request);
 
     }
     public function attachReactionToComment($reactionId,$commentId)

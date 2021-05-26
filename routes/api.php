@@ -40,11 +40,7 @@ Route::group([
     Route::post('me', [AuthController::class,'me']);
 
 });
-///////////////////////////organization route///////////////////////////// 
-
-/**
- * get all Organization Route
- */                                              
+///////////////////////////organization route/////////////////////////////                                            
 Route::get('organizations',[OrganizationController::class,'index']);
 Route::post('createorganization',[OrganizationController::class,'store']);
 Route::get('organization/{organizationId}',[OrganizationController::class,'show']);
@@ -60,56 +56,21 @@ Route::put('report/{reportId}',[ReportController::class,'edit']);
 Route::delete('deleteReport/{reportId}',[ReportController::class,'destroy']);
 
 
-///////////////////////////////////Comment route////////////////////////////////////
-                                  
+///////////////////////////////////Comment route////////////////////////////////////////                                  
 Route::get('comments',[CommentController::class,'index']);             
 Route::get('comment/{commentId}',[CommentController::class,'show']);  
 Route::post('commentToPost/{postId}',[CommentController::class,'assignCommentToPost']);
-
-/**
- * get specific report Route
- */   
-Route::get('report/{reportId}',[ReportController::class,'show']);
-
-/**
- * delete specific report Route
- */   
+Route::get('report/{reportId}',[ReportController::class,'show']);  
 Route::delete('deleteReport/{reportId}',[ReportController::class,'destroy']);
 
 
 
-
-/////////////////////////////////reaction route////////////////////////////
-/**
- * get all reaction Route
- */                                              
+/////////////////////////////////reaction route////////////////////////////////////////                                            
 Route::get('reactions',[ReactionController::class,'index']);
-
-/**
- * create reaction route
- */
-Route::post('createReaction',[ReactionController::class,'store']);
-
-/**
- * get specific reaction Route
- */   
-Route::get('reaction/{reactionId}',[ReactionController::class,'show']);
-
-/**
- * edit reaction Route
- */   
-Route::put('editReaction/{reactionId}',[ReactionController::class,'update']);
-/**
- * delete reaction Route
- */   
-Route::delete('deleteReaction/{reactionId}',[ReactionController::class,'destroy']);
-/**
- * attachReactionToPost Route
- */   
-Route::post('attachReactionToPost/{reactionId}/{postId}',[ReactionController::class,'attachReactionToPost']);
-/**
- * attachReactionToComment Route
- */   
+Route::get('reaction/{reactionId}',[ReactionController::class,'show']); 
+Route::put('editReaction/{reactionId}',[ReactionController::class,'update']); 
+Route::delete('deleteReaction/{reactionId}',[ReactionController::class,'destroy']);   
+Route::post('attachReactionToPost/{postId}',[ReactionController::class,'attachReactionToPost']);  
 Route::post('attachReactionToComment/{reactionId}/{commentId}',[ReactionController::class,'attachReactionToComment']);
 
 

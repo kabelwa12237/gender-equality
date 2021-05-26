@@ -32,7 +32,7 @@ class Post extends Model implements HasMedia
       return $this->morphToMany(Comment::class,'commentable');
     }
     public function reactions(){
-      return $this->morphToMany(Reaction::class,'reactionable');
+      return $this->morphMany(Reaction::class,'reactionable');
     }
     public function user(){
       return $this->belongsTo(User::class);
