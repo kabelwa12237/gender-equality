@@ -2,17 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Post;
+use App\Models\Role;
 use Illuminate\Http\Request;
 
-class PostController extends Controller
+class RoleController extends Controller
 {
-    private $Post;
-    public function __construct()
-    {
-       $this->middleware('auth:api', ['except' => ['login']]);
-        $this->post=new Post();
-    }
     /**
      * Display a listing of the resource.
      *
@@ -21,7 +15,6 @@ class PostController extends Controller
     public function index()
     {
         //
-        return $this->post->allPosts();
     }
 
     /**
@@ -48,60 +41,45 @@ class PostController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Post  $post
+     * @param  \App\Models\Role  $role
      * @return \Illuminate\Http\Response
      */
-    public function show($postId)
+    public function show(Role $role)
     {
         //
-        return $this->post->getPost($postId);
-
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Post  $post
+     * @param  \App\Models\Role  $role
      * @return \Illuminate\Http\Response
      */
-    public function edit(Request $request, $postId)
+    public function edit(Role $role)
     {
         //
-        return $this->post->editPost($request,$postId);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Post  $post
+     * @param  \App\Models\Role  $role
      * @return \Illuminate\Http\Response
      */
-    public function update($request, Post $post)
+    public function update(Request $request, Role $role)
     {
         //
-        
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Post  $post
+     * @param  \App\Models\Role  $role
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request,$postId)
+    public function destroy(Role $role)
     {
         //
-        return $this->post->deletePost($request,$postId);
     }
-
-    
-    public function post(Request $request)
-    {
-        //
-        return $this->post->addPost($request);
-    }
-
-
-
 }

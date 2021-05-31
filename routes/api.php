@@ -8,6 +8,7 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\ReactionController;
 use App\Http\Controllers\ReportController;
 use App\Http\Resources\PostResource;
+use App\Http\Controllers\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,6 +24,22 @@ use App\Http\Resources\PostResource;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();   
 });
+
+//authentication routes
+Route::group([
+
+    'middleware' => 'api',
+    'prefix' => 'auth'
+
+], function ($router) {
+
+    Route::post('login', [AuthController::class, 'login']);
+    Route::post('logout', [AuthController::class, 'logout']);
+    Route::post('refresh', [AuthController::class, 'refresh']);
+    Route::post('me', [AuthController::class,'me']);
+
+});
+
 
 // organization route
 
@@ -41,7 +58,7 @@ Route::delete('report/{reportId}',[ReportController::class ,'destroy']);
 
 
 // post route
-Route::get('post',[PostController::class,'index']);
+Route::get('posts',[PostController::class,'index']);
 Route::get('post/{postId}',[PostController::class ,'show']);
 Route::post('post',[PostController::class ,'post']);
 Route::put('post/{postId}',[PostController::class ,'edit']);

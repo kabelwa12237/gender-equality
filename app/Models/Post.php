@@ -21,11 +21,17 @@ class Post extends Model implements HasMedia
     protected $fillable = ['body'];
     protected $dates = ["deleted at"];
 
-
+//relationships
     public function reaction()
     {
         return $this->morphedToMany(Reaction::class, 'reactionable');
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class,);
+    }
+
 
     public function allPosts()
     {
@@ -75,8 +81,8 @@ class Post extends Model implements HasMedia
        $post=new Post();
        $post->body=$request->body;
 
-
-       $post->save();
+      // $post->save();
+      auth()->user()->posts()->save ($post);
 
        if($request->hasFile('media')){
         $post

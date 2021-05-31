@@ -2,17 +2,17 @@
 
 namespace Database\Factories;
 
-use App\Models\Post;
+use App\Models\Role;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class PostFactory extends Factory
+class RoleFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = Post::class;
+    protected $model = Role::class;
 
     /**
      * Define the model's default state.
@@ -23,9 +23,10 @@ class PostFactory extends Factory
     {
         return [
             //
-            'body'=> $this->faker->text(),
-            'user_id'=>$this->faker->randomDigit (),
-            'post_id'=>$this->faker->randomDigit ()
-        ];
+            // 'name'=> $this->faker->randomElement(['system admin','database admin','normal user']),
+            // 'description'=> $this->faker->randomElement(['system administrator','database administrator','normal user'])
+
+        
+     ];
     }
 }
