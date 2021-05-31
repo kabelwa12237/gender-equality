@@ -8,7 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class User extends Authenticatable implements JWTSubject
+class User extends Authenticatable implements JWTSubject,MustVerifyEmail
 {
     use HasFactory, Notifiable;
 
@@ -21,6 +21,7 @@ class User extends Authenticatable implements JWTSubject
         'name',
         'email',
         'password',
+        
     ];
     /**
      * Get the posts
@@ -30,6 +31,14 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasMany(Post::class);
     }
+     
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
+    
+
 
      /**
      * Get the identifier that will be stored in the subject claim of the JWT.

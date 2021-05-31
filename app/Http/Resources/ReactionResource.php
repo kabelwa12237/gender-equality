@@ -15,11 +15,11 @@ class ReactionResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id'=>$this->id,
-            'type'=>$this->type,
-            'emoji'=>$this->emoji,
-            'posts'=>$this->posts,
-            'comments'=>$this->comments
+            'id' => $this->id,
+            'type' => $this->type,
+            'emoji' => $this->emoji,
+            'posts' => $this->posts,
+            'reactionaable' => $this->reactionable
         ];
     }
 }

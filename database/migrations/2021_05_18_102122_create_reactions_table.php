@@ -15,8 +15,13 @@ class CreateReactionsTable extends Migration
     {
         Schema::create('reactions', function (Blueprint $table) {
             $table->id();
+
+
+            $table->integer('user_id');
             $table->string('type');
             $table->string('emoji');
+            $table->integer("reactionable_id");
+            $table->string("reactionable_type");
 
             $table->softDeletes();
             $table->timestamps();

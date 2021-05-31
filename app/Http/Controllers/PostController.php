@@ -12,16 +12,16 @@ class PostController extends Controller
     public function __construct()
     {
        $this->post=new Post(); 
-       $this->middleware('auth:api', ['except' => ['index']]);
+      // $this->middleware('blog:api', ['except' => ['index']]);
     }
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function getAllPosts($limit)
     {
-        return $this->post->allPosts();
+        return $this->post->allPosts($limit);
     }
 
     /**
@@ -29,7 +29,7 @@ class PostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $request)
+    public function postPost(Request $request)
     {
         return $this->post->createPost($request);
 
@@ -52,7 +52,7 @@ class PostController extends Controller
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function show($postId)
+    public function getPost($postId)
     {
         return $this->post->getPost($postId);
     }
@@ -63,7 +63,7 @@ class PostController extends Controller
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function edit(Request $request, $postId)
+    public function editPost(Request $request, $postId)
     {
         return $this->post->editPost($request,$postId);
     }
@@ -86,7 +86,7 @@ class PostController extends Controller
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function destroy($postId)
+    public function deletePost($postId)
     {
         return $this->post->deletePost($postId);
     }

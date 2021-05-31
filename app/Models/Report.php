@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Events\ReportSubmitted;
 use App\Http\Controllers\OrganizationController;
 use App\Http\Resources\OrganizationResource;
 use App\Http\Resources\ReportResource;
@@ -94,6 +95,7 @@ protected $dates=['deleted_at'];
             $report->latitude=$request->latitude;
             $report->longitude=$request->longitude;
             $report->save();
+            event(new ReportSubmitted($report));
             /**
              * Checking if file exists
              */
@@ -119,6 +121,8 @@ protected $dates=['deleted_at'];
 
         $report->organizations()->attach($organization);
         return new ReportResource($report);
+
+      
 
     }
 

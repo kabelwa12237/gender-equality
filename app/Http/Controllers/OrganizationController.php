@@ -25,7 +25,7 @@ class OrganizationController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function index()
+    public function getAllOrganizations()
     {
      return $this->organization->allOrganizations();
       // return response()->json(['organizations'=>Organization::all()]);
@@ -59,7 +59,7 @@ class OrganizationController extends Controller
      * @param  \App\Models\Organization  $organization
      * @return \Illuminate\Http\Response
      */
-    public function show($organizationId)
+    public function getOrganization($organizationId)
     {
         return $this->organization->getOrganization($organizationId);
         //
@@ -71,7 +71,7 @@ class OrganizationController extends Controller
      * @param  \App\Models\Organization  $organization
      * @return \Illuminate\Http\Response
      */
-    public function edit(Request $request, $organizationId)
+    public function editOrganization(Request $request, $organizationId)
 
     {
     return $this->organization->editOrganization($request,$organizationId);    //
@@ -95,13 +95,13 @@ class OrganizationController extends Controller
      * @param  \App\Models\Organization  $organization
      * @return \Illuminate\Http\Response
      */
-    public function destroy($organizationId)
+    public function deleteOrganization($organizationId)
     {
         return $this->organization->deleteOrganization($organizationId);
         //
     }
     
-    public function post(Request $request){
+    public function postOrganization(Request $request){
         return $this->organization->postOrganization($request);
     }
 

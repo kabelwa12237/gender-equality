@@ -17,7 +17,7 @@ class ReactionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function getAllReactions()
     {
         return $this->reaction->allReactions();
     }
@@ -27,7 +27,7 @@ class ReactionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $request)
+    public function postReaction(Request $request)
     {
         return $this->reaction->postReaction($request);
     }
@@ -49,7 +49,7 @@ class ReactionController extends Controller
      * @param  \App\Models\Reaction  $reaction
      * @return \Illuminate\Http\Response
      */
-    public function show($reactionId)
+    public function getReaction($reactionId)
     {
         return $this->reaction->getReaction($reactionId);
     }
@@ -60,7 +60,7 @@ class ReactionController extends Controller
      * @param  \App\Models\Reaction  $reaction
      * @return \Illuminate\Http\Response
      */
-    public function edit(Request $request,$reactionId)
+    public function editReaction(Request $request,$reactionId)
     {
         return $this->reaction->editReaction($request,$reactionId);
     }
@@ -83,13 +83,13 @@ class ReactionController extends Controller
      * @param  \App\Models\Reaction  $reaction
      * @return \Illuminate\Http\Response
      */
-    public function destroy($reactionId)
+    public function deleteReaction($reactionId)
     {
         return $this->reaction->deleteReaction($reactionId);
     }
 
-  public function assignPost($reactionId,$postId){
-      return $this->reaction->assignReactionToPost($reactionId,$postId);
+  public function assignPost(Request $request,$postId){
+      return $this->reaction->assignReactionToPost($request,$postId);
   }
   public function assignComment($reactionId,$commentId){
       return $this->reaction->assignReactionToComment($reactionId,$commentId);

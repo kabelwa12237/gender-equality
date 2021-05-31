@@ -18,7 +18,7 @@ class ReportController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function getAllReports()
     {
         return $this->report->allReports();
     }
@@ -50,7 +50,7 @@ class ReportController extends Controller
      * @param  \App\Models\Report  $report
      * @return \Illuminate\Http\Response
      */
-    public function show($reportId)
+    public function getReport($reportId)
     {
         return $this->report->getReport($reportId);
     }
@@ -61,7 +61,7 @@ class ReportController extends Controller
      * @param  \App\Models\Report  $report
      * @return \Illuminate\Http\Response
      */
-    public function edit(Request $request, $reportId)
+    public function editReport(Request $request, $reportId)
     {
     return $this->report->editReport($request,$reportId); 
     }
@@ -84,11 +84,11 @@ class ReportController extends Controller
      * @param  \App\Models\Report  $report
      * @return \Illuminate\Http\Response
      */
-    public function destroy($reportId)
+    public function deleteReport($reportId)
     {
         return $this->report->deleteReport($reportId);
     }
-    public function post(Request $request){
+    public function postReport(Request $request){
         return $this->report->postReport($request);
     }
     public function assignReport($reportId,$organizationId){

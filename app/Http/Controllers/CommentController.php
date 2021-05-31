@@ -18,7 +18,7 @@ class CommentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function getAllComments()
     {
         return $this->comment->allComments();
     }
@@ -28,7 +28,7 @@ class CommentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $request)
+    public function postComment(Request $request)
     {
         return $this->comment->postComment($request);
     }
@@ -50,7 +50,7 @@ class CommentController extends Controller
      * @param  \App\Models\Comment  $comment
      * @return \Illuminate\Http\Response
      */
-    public function show($commentId)
+    public function getComment($commentId)
     {
         return $this->comment->getComment($commentId);
     }
@@ -61,7 +61,7 @@ class CommentController extends Controller
      * @param  \App\Models\Comment  $comment
      * @return \Illuminate\Http\Response
      */
-    public function edit(Request $request, $commentId)
+    public function editComment(Request $request, $commentId)
     {
         return $this->comment->editComment($request,$commentId);
     }
@@ -84,7 +84,7 @@ class CommentController extends Controller
      * @param  \App\Models\Comment  $comment
      * @return \Illuminate\Http\Response
      */
-    public function destroy($commentId)
+    public function deleteComment($commentId)
     {
         return $this->comment->deleteComment($commentId);
     }

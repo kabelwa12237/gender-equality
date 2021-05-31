@@ -16,6 +16,7 @@ class Organization extends Model
      * These are variables
      * Business logic 
      */
+    protected $table = 'organizations';
     protected $fillable=[
         'name','type','contact','latitude','longitude','address'];
     protected $dates=["deleted_at"];

@@ -17,8 +17,8 @@ class UserSeeder extends Seeder
     public function run()
     {
         $user1=User::create([
-            'name'=>'sophia',
-            'email'=>'sophiamemba@gmail.com',
+            'name'=>'asha',
+            'email'=>'ashabaraka@gmail.com',
             'password'=>Hash::make('12345t'),
            
         ]);
@@ -35,7 +35,7 @@ class UserSeeder extends Seeder
 
         $user3=User::create([
             'name'=>'asha',
-            'email'=>'ashabaraka@gmail.com',
+            'email'=>'elizamemba@gmail.com',
             'password'=>Hash::make('12345t')
         ]);
         $user3->roles()->attach(Role::find(3));
