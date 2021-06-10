@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Events\ReportSubmitted;
 use App\Http\Resources\ReportResource;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -47,7 +48,7 @@ class Report extends Model implements HasMedia
     /**get all Function */
     public function allReports()
     {
-        return ReportResource::collection(Report::all());
+        return ReportResource::collection(Report::all()->sortDesc());
     }
 
     /**get single Function */
@@ -104,6 +105,9 @@ class Report extends Model implements HasMedia
         $report->latitude = $request->latitude;
         $report->longitude = $request->longitude;
         $report->save();
+
+        /**call event */
+        event(new ReportSubmitted($report));
 
         if($request->hasFile('media_file')){
             $report

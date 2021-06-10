@@ -36,30 +36,32 @@ Route::group([
 ], function ($router) {
 
     Route::post('login', [AuthController::class, 'login'] );
+    Route::post('register', [AuthController::class, 'register'] );
     Route::post('logout', [AuthController::class,'logout']);
     Route::post('refresh', [AuthController::class,'refresh']);
     Route::post('me', [AuthController::class, 'me']);
 });
 
 
+
 /**
  * Organization Routes
  */
-Route::get('organizations', [OrganizationController::class, 'index']);
-Route::post('organization', [OrganizationController::class, 'store']);
-Route::get('organization/{organizationId}', [OrganizationController::class, 'show']);
-Route::put('organization/{organizationId}', [OrganizationController::class, 'edit']);
-Route::delete('organization/{organizationId}', [OrganizationController::class, 'destroy']);
+Route::get('organizations', [OrganizationController::class, 'getAllOrganizations']);
+Route::post('organization', [OrganizationController::class, 'postSingleOrganization']);
+Route::get('organization/{organizationId}', [OrganizationController::class, 'getSingleOrganization']);
+Route::put('editorganization/{organizationId}', [OrganizationController::class, 'editSingleOrganization']);
+Route::delete('deleteorganization/{organizationId}', [OrganizationController::class, 'deleteSingleOrganization']);
 
 
 /**
  * Report Routes
  */
-Route::get('reports', [ReportController::class, 'index']);
-Route::post('report', [ReportController::class, 'store']);
-Route::get('report/{reportId}', [ReportController::class, 'show']);
-Route::put('report/{reportId}', [ReportController::class, 'edit']);
-Route::delete('report/{reportId}', [ReportController::class, 'destroy']);
+Route::get('reports', [ReportController::class, 'allReports']);
+Route::post('report', [ReportController::class, 'postSingleReport']);
+Route::get('report/{reportId}', [ReportController::class, 'getSingleReport']);
+Route::put('editreport/{reportId}', [ReportController::class, 'editSingleReport']);
+Route::delete('deletereport/{reportId}', [ReportController::class, 'deleteSingleReport']);
 /**Assignments */
 Route::get('assignreport/{reportId}/{organizationId}', [ReportController::class, 'assignReport']);
 
@@ -69,39 +71,39 @@ Route::get('assignreport/{reportId}/{organizationId}', [ReportController::class,
  */
 Route::group([
 
-    'middleware' => 'api',
+    //'middleware' => 'auth.jwt',
     'prefix' => 'blog'
 
 ], function ($router) {
 
-    Route::get('posts', [PostController::class, 'index']);
-    Route::post('post', [PostController::class, 'store']);
-    Route::get('post/{postId}', [PostController::class, 'show']);
-    Route::put('post/{postId}', [PostController::class, 'edit']);
-    Route::delete('post/{postId}', [PostController::class, 'destroy']);
+    Route::get('posts/{limit}', [PostController::class, 'getAllPosts']);
+    Route::post('post', [PostController::class, 'postSinglePost']);
+    Route::get('post/{postId}', [PostController::class, 'getSinglePost']);
+    Route::put('post/{postId}', [PostController::class, 'editSinglePost']);
+    Route::delete('post/{postId}', [PostController::class, 'deleteSinglePost']);
 });
 
 
 /**
  * Comment Routes
  */
-Route::get('comments', [CommentController::class, 'index']);
-Route::get('comment/{commentId}', [CommentController::class, 'show']);
-Route::put('comment/{commentId}', [CommentController::class, 'edit']);
-Route::delete('comment/{commentId}', [CommentController::class, 'destroy']);
+Route::get('comments', [CommentController::class, 'getAllComments']);
+Route::get('comment/{commentId}', [CommentController::class, 'getSingleComment']);
+Route::put('editcomment/{commentId}', [CommentController::class, 'editSingleComment']);
+Route::delete('deletecomment/{commentId}', [CommentController::class, 'deleteSingleComment']);
 /**Assignments */
-Route::post('commentpost/{postId}', [CommentController::class, 'commentPost']);
-Route::post('commentcomment/{commentId}', [CommentController::class, 'commentComment']);
+Route::post('commentpost/{postId}', [CommentController::class, 'commentPost'])->middleware('auth.jwt');
+Route::post('commentcomment/{commentId}', [CommentController::class, 'commentComment'])->middleware('auth.jwt');
 
 
 /**
  * Reaction Routes
  */
-Route::get('reactions', [ReactionController::class, 'index']);
-Route::post('reaction', [ReactionController::class, 'store']);
-Route::get('reaction/{reactionId}', [ReactionController::class, 'show']);
-Route::put('reaction/{reactionId}', [ReactionController::class, 'edit']);
-Route::delete('reaction/{reactionId}', [ReactionController::class, 'destroy']);
+Route::get('reactions', [ReactionController::class, 'getAllReactions']);
+Route::post('reaction', [ReactionController::class, 'postSingleReaction']);
+Route::get('reaction/{reactionId}', [ReactionController::class, 'getSingleReaction']);
+Route::put('editreaction/{reactionId}', [ReactionController::class, 'editSingleReaction']);
+Route::delete('deletereaction/{reactionId}', [ReactionController::class, 'deleteSingleReaction']);
 /**Assignments */
-Route::get('reactpost/{reactionId}/{postId}', [ReactionController::class, 'reactPost']);
-Route::get('reactcomment/{reactionId}/{commentId}', [ReactionController::class, 'reactComment']);
+Route::get('reactpost/{postId}', [ReactionController::class, 'reactPost']);
+Route::get('reactcomment/{commentId}', [ReactionController::class, 'reactComment']);

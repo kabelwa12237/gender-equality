@@ -20,7 +20,8 @@ class ReportResource extends JsonResource
             'latitude'=>$this->latitude,
             'longitude'=>$this->longitude,
             'organizations'=>$this->organizations,
-            'media'=>$this-> getMedia()
+            'media'=>$this-> getMedia(),
+            'time'=>$this->created_at->diffForHumans(),
 
         ];
     }

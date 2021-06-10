@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Events\ReactionSubmitted;
 use App\Http\Resources\ReactionResource;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -16,23 +17,15 @@ class Reaction extends Model
     /**
      * Variables
      */
-    protected $fillable = ['emoji', 'type'];
+    protected $fillable = ['emoji', 'type', 'user_id'];
     protected $dates = ['deleted_at'];
-    
-       /**
-     * Get all of the Posts that are assigned this reaction.
-     */
-    public function posts()
-    {
-        return $this->morphedByMany(Post::class, 'reactionable');
-    }
 
-     /**
-     * Get all of the Comments that are assigned this reaction.
+    /**
+     * Get the parent reactionable model (post or comment).
      */
-    public function comments()
+    public function reactionable()
     {
-        return $this->morphedByMany(Comment::class, 'reactionable');
+        return $this->morphTo(Post::class, Comment::class);
     }
 
 
@@ -44,20 +37,20 @@ class Reaction extends Model
     /**get all Function */
     public function allReactions()
     {
-        return ReactionResource::collection(Reaction::all());
+        return ReactionResource::collection(Reaction::all()->sortDesc());
     }
 
-        /**get single Function */
-        public function getReaction($reactionId)
-        {
-            $reaction = Reaction::find($reactionId);
-            if (!$reaction)
-                return response()->json(['Error' => 'Sorry! Report not Found'], 404);
-    
-            return new ReactionResource($reaction);
-        }
+    /**get single Function */
+    public function getReaction($reactionId)
+    {
+        $reaction = Reaction::find($reactionId);
+        if (!$reaction)
+            return response()->json(['Error' => 'Sorry! Report not Found'], 404);
 
-            /**Edit Function */
+        return new ReactionResource($reaction);
+    }
+
+    /**Edit Function */
     public function editReaction($request, $reactionId)
     {
         $reaction = Reaction::find($reactionId);
@@ -67,72 +60,95 @@ class Reaction extends Model
         $reaction->update([
             'emoji' => $request->emoji,
             'type' => $request->type,
-
         ]);
 
         return new ReactionResource($reaction);
     }
 
-      /**Delete Function */
-      public function deleteReaction($reactionId)
-      {
-          $reaction = Reaction::find($reactionId);
-          if (!$reaction)
-              return response()->json(['Error' => 'Sorry! Report not Found'], 404);
-  
-          $reaction->destroy($reactionId);
-          return response()->json(['Hello! Report deleted'], 200);
-      }
-  
-      /**Post Function */
-      public function postReaction($request)
-      {
-          $validator = Validator::make($request->all(), [
-              'emoji' => 'required',
-              'type' => 'required',
-
-          ]);
-          if ($validator->fails()) {
-              return response()->json(['error' => $validator->errors(), 'status' => false], 300);
-          }
-  
-          $reaction = new Reaction();
-          $reaction->emoji = $request->emoji;
-          $reaction->type = $request->type;
-
-          $reaction->save();
-  
-          return new ReactionResource($reaction);
-      }
-
-     /**Assign React to comment  */
-     public function reactToComment($reactionId, $commentId){
+    /**Delete Function */
+    public function deleteReaction($reactionId)
+    {
         $reaction = Reaction::find($reactionId);
-        if(!$reaction)
-        return response()->json(['Error' => 'Sorry! Reaction not Found'], 404);
+        if (!$reaction)
+            return response()->json(['Error' => 'Sorry! Report not Found'], 404);
 
-        $comment = Comment::find($commentId);
-        if (!$comment)
-           return response()->json(['Error' => 'Sorry! Comment not found'], 404);
+        $reaction->destroy($reactionId);
+        return response()->json(['Hello! Report deleted'], 200);
+    }
 
-        $reaction->comments()->attach($comment);
+    /**Post Function */
+    public function postReaction($request)
+    {
+        $validator = Validator::make($request->all(), [
+            'emoji' => 'required',
+            'type' => 'required'
+
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors(), 'status' => false], 300);
+        }
+
+        $reaction = new Reaction();
+        $reaction->emoji = $request->emoji;
+        $reaction->type = $request->type;
+
+        $reaction->save();
+
 
         return new ReactionResource($reaction);
     }
 
-      /**Assign React to post  */
-      public function reactToPost($reactionId, $postId){
-        $reaction = Reaction::find($reactionId);
-        if(!$reaction)
-        return response()->json(['Error' => 'Sorry! Reaction not Found'], 404);
+    /**Assign React to comment  */
+    public function reactToComment($request, $commentId)
+    {
+        $comment = Comment::find($commentId);
+        if (!$comment)
+            return response()->json(['Error' => 'Sorry! Comment not found'], 404);
+
+        $validator = Validator::make($request->all(), [
+            'emoji' => 'required',
+            'type' => 'required',
+
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors(), 'status' => false], 300);
+        }
+
+        $reaction = new Reaction();
+        $reaction->emoji = $request->emoji;
+        $reaction->type = $request->type;
+        $reaction->user_id = auth()->user()->id;
+
+        $comment->reactions()->save($reaction);
+
+        return new ReactionResource($reaction);
+    }
+
+    /**Assign React to post  */
+    public function reactToPost($request, $postId)
+    {
 
         $post = Post::find($postId);
         if (!$post)
-           return response()->json(['Error' => 'Sorry! Post not found'], 404);
+            return response()->json(['Error' => 'Sorry! Post not found'], 404);
 
-        $reaction->posts()->attach($post);
+        $validator = Validator::make($request->all(), [
+            'emoji' => 'required',
+            'type' => 'required',
+
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors(), 'status' => false], 300);
+        }
+
+        $reaction = new Reaction();
+        $reaction->emoji = $request->emoji;
+        $reaction->type = $request->type;
+        $reaction->user_id = auth()->user()->id;
+
+        $post->reactions()->save($reaction);
+
 
         return new ReactionResource($reaction);
     }
-
 }

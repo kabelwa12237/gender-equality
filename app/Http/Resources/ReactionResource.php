@@ -18,8 +18,9 @@ class ReactionResource extends JsonResource
             'id'=>$this->id,
             'emoji' => $this->emoji,
             'type' => $this->type,
-            'posts'=>$this->posts,
-            'comments'=>$this->comments
+            'time'=>$this->created_at->diffForHumans(), 
+            'reactionable'=>$this->reactionable,
+            'user_id' => $this->user_id,  
         ];
     }
 }

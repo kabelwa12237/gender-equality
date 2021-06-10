@@ -22,7 +22,11 @@ class ReactionFactory extends Factory
     public function definition()
     {
         return [
-            'emoji'=> $this->faker->emoji(),
-            'type'=> $this->faker->randomElement(["Sad", "Happy", "laughing"]),        ];
+            'emoji' => $this->faker->emoji(),
+            'type' => $this->faker->randomElement(["Sad", "Happy", "laughing"]),
+            'user_id' => $this->faker->randomDigit(),
+            'reactionable_id' => $this->faker->randomDigit(),
+            'reactionable_type' => $this->faker->randomElement(["post", "comment"]),
+        ];
     }
 }

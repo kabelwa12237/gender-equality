@@ -42,7 +42,7 @@ class Organization extends Model
     /**get all Function */
    public function allOrganizations()
    {
-      return OrganizationResource::collection(Organization::all());
+      return OrganizationResource::collection(Organization::all()->sortDesc());
    }
 
     /**get single Function */
@@ -63,7 +63,14 @@ class Organization extends Model
          return response()->json(['Error' => 'Sorry! Table not found'], 404);
 
       /**Edit Function */
-      $organization->update(['name' => $request->name]);
+      $organization->update([
+         'name' => $request->name,
+         'type' => $request->type,
+         'contact' => $request->contact,
+         'address' => $request->contact,
+         'latitude' => $request->latitude,
+         'longitude' => $request->longitude,       
+         ]);
 
       return new OrganizationResource($organization);
    }

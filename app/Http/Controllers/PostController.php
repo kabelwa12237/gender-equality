@@ -12,7 +12,7 @@ class PostController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['index']]);
+        // $this->middleware('auth:api', ['except' => ['index']]);
         $this->post = new Post();
     }
     /**
@@ -20,10 +20,10 @@ class PostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function getAllPosts($limit)
     {
         //
-        return $this->post->allPosts();
+        return $this->post->allPosts($limit);
     }
 
 
@@ -33,7 +33,7 @@ class PostController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function postSinglePost(Request $request)
     {
         return $this->post->postPost($request);
     }
@@ -44,7 +44,7 @@ class PostController extends Controller
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function show($postId)
+    public function getSinglePost($postId)
     {
         //
         return $this->post->getPost($postId);
@@ -56,7 +56,7 @@ class PostController extends Controller
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function edit(Request $request, $postId)
+    public function editSinglePost(Request $request, $postId)
     {
         //
         return $this->post->editPost($request, $postId);
@@ -68,7 +68,7 @@ class PostController extends Controller
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function destroy($postId)
+    public function deleteSinglePost($postId)
     {
         return $this->post->deletePost($postId);
     }

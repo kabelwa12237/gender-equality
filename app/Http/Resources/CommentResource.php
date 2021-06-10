@@ -17,10 +17,13 @@ class CommentResource extends JsonResource
         return [
             'id'=>$this->id,
             'body' => $this->body,
+            'user_id' => $this->user_id,
             'posts'=>$this->posts,
             'reactions'=>$this->reactions,
             'comments'=>$this->comments,
             'comment'=>$this->comment,
+            'time'=>$this->created_at->diffForHumans(),   
+
 
 
         ];

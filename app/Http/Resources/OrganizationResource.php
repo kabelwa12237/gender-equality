@@ -23,6 +23,7 @@ class OrganizationResource extends JsonResource
             'latitude'=>$this->latitude,
             'longitude'=>$this->longitude,
             'reports'=>$this->reports,
+            'time'=>$this->created_at->diffForHumans(),
         ];
     }
 }

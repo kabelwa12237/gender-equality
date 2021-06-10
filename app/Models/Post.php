@@ -20,35 +20,34 @@ class Post extends Model implements HasMedia
     /**
      * Variables
      */
-    protected $fillable = ['body'];
+    protected $fillable = ['title','body'];
     protected $dates = ['deleted_at'];
 
     /**
      * Relationship presented by function
      */
 
-    /**Get all reactions for the Post */
+    /**
+     * Get all of the post's reactions.
+     */
 
     public function reactions()
     {
-        return $this->morphToMany(Reaction::class, 'reactionable');
+        return $this->morphMany(Reaction::class, 'reactionable');
     }
 
-    /**Get all comments for the Post */
-
-    public function comments()
-    {
-        return $this->morphToMany(Comment::class, 'commentable');
-    }
-
-        /**
+    /**
      * Get the comments for the blog post.
      */
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 
+    
+    public function comments(){
+        return $this->morphToMany(Comment::class, 'commentable');
+    }
 
     /**
      * Business Logic
@@ -56,9 +55,10 @@ class Post extends Model implements HasMedia
      */
 
     /**get all Function */
-    public function allPosts()
+    public function allPosts($limit)
     {
-        return PostResource::collection(Post::all());
+         
+        return PostResource::collection(Post::all()->take($limit)->sortDesc());
     }
 
     /**get single Function */
@@ -101,25 +101,26 @@ class Post extends Model implements HasMedia
     {
 
         $validator = Validator::make($request->all(), [
+            'title' => 'required',
             'body' => 'required',
         ]);
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors(), 'status' => false], 300);
         }
 
-        
-
+        /**create post */
         $post = new Post();
+        $post->title = $request->title;
         $post->body = $request->body;
-        
+
         auth()->user()->posts()->save($post);
 
-        /** */
-        if($request->hasFile('media')){
+        /**add media file to the post */
+        if ($request->hasFile('media')) {
             $post
-               ->addMedia($request->file('media'))
-               ->preservingOriginal()
-               ->toMediaCollection();
+                ->addMedia($request->file('media'))
+                ->preservingOriginal()
+                ->toMediaCollection();
         }
 
         return new PostResource($post);

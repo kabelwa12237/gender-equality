@@ -22,9 +22,9 @@ class PostFactory extends Factory
     public function definition()
     {
         return [
-            
-            'body'=> $this->faker->text(),
-            'user_id'=>$this->faker->randomDigit()
+            'title'=> $this->faker->text(),
+            'body'=> $this->faker->paragraph(),
+            'user_id'=>$this->faker->randomElement([1,2,3])
 
         ];
     }

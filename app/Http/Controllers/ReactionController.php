@@ -20,7 +20,7 @@ class ReactionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function getAllReactions()
     {
         return $this->reaction->allReactions();
     }
@@ -31,7 +31,7 @@ class ReactionController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function postSingleReaction(Request $request)
     {
         return $this->reaction->postReaction($request);
     }
@@ -42,7 +42,7 @@ class ReactionController extends Controller
      * @param  \App\Models\Reaction  $reaction
      * @return \Illuminate\Http\Response
      */
-    public function show($reactionId)
+    public function getSingleReaction($reactionId)
     {
         return $this->reaction->getReaction($reactionId);
     }
@@ -53,7 +53,7 @@ class ReactionController extends Controller
      * @param  \App\Models\Reaction  $reaction
      * @return \Illuminate\Http\Response
      */
-    public function edit(Request $request, $reactionId)
+    public function editSingleReaction(Request $request, $reactionId)
     {
         return $this->reaction->editReaction($request, $reactionId);
     }
@@ -64,7 +64,7 @@ class ReactionController extends Controller
      * @param  \App\Models\Reaction  $reaction
      * @return \Illuminate\Http\Response
      */
-    public function destroy($reactionId)
+    public function deleteSingleReaction($reactionId)
     {
         return $this->reaction->deleteReaction($reactionId);
     }
@@ -72,14 +72,14 @@ class ReactionController extends Controller
         /**
       * Method for assign reaction to post.
       */
-      public function reactPost($reactionId, $postId){
-        return $this->reaction->reactToPost($reactionId, $postId);
+      public function reactPost(Request $request, $postId){
+        return $this->reaction->reactToPost($request, $postId);
     }
 
             /**
       * Method for assign reaction to comment.
       */
-      public function reactComment($reactionId, $commentId){
-        return $this->reaction->reactToComment($reactionId, $commentId);
+      public function reactComment(Request $request, $commentId){
+        return $this->reaction->reactToComment($request, $commentId);
     }
 }

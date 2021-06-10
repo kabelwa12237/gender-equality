@@ -16,46 +16,25 @@ class Comment extends Model
     /**
      * Variables
      */
-    protected $fillable = ['body'];
+    protected $fillable = ['body', 'user_id'];
     protected $dates = ['deleted_at'];
 
     /**
-     * Relationship presented by function
+     * Get all of the comment's reactions.
      */
+    // public function reactions()
+    // {
+    //     return $this->morphMany(Reaction::class, 'reactionable');
+    // }
 
-    /**
-     * Get all reactions for the Comment 
-     */
-
-    public function reactions()
-    {
-        return $this->morphToMany(Reaction::class, 'reactionable');
-    }
-
-
-    /**
-     * Get all posts for the Comment 
-     * */
-    public function posts()
-    {
+    public function posts(){
         return $this->morphedByMany(Post::class, 'commentable');
     }
 
-    /**
-     * Get all comments for the Comment 
-     * */
-    public function comments()
-    {
-        return $this->morphedByMany(Comment::class, 'commentable');
-    }
-
-    /**
-     * Get all comment for the Comment 
-     * */
-    public function comment()
-    {
+    public function comments(){
         return $this->morphToMany(Comment::class, 'commentable');
     }
+
 
     /**
      * Business Logic
@@ -65,7 +44,7 @@ class Comment extends Model
     /**get all Function */
     public function allComments()
     {
-        return CommentResource::collection(Comment::all());
+        return CommentResource::collection(Comment::all()->sortDesc());
     }
 
     /**get single Function */
@@ -82,7 +61,7 @@ class Comment extends Model
     public function editComment($request, $commentId)
     {
         $comment = Comment::find($commentId);
-        if ($comment)
+        if (!$comment)
             return response()->json(['Error' => 'Sorry! Comment not Found'], 404);
 
         $comment->update([
@@ -118,9 +97,10 @@ class Comment extends Model
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors(), 'status' => false], 300);
         }
-
+        
         $comment = Comment::create([
-            'body' => $request->body
+            'body' => $request->body,
+            'user_id' => auth()->user()->id,
         ]);
 
         $comment->posts()->attach($post);
@@ -143,7 +123,9 @@ class Comment extends Model
         }
 
         $newComment = Comment::create([
-            'body' => $request->body
+            'body' => $request->body,
+            'user_id' => auth()->user()->id,
+
         ]);
 
         $newComment->comments()->attach($comment);
