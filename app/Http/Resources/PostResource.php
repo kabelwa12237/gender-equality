@@ -24,7 +24,7 @@ class PostResource extends JsonResource
             'reactions' => $this->reactions,
             'reaction_count' => count($this->reactions),
             'comments_count' => count($this->comments),
-            'images' => $this->getMedia(),
+            'image' => $this->getFirstMediaUrl(),
             'time' => $this->created_at->diffForHumans(),
         ];
     }

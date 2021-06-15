@@ -20,7 +20,7 @@ class Post extends Model implements HasMedia
     /**
      * Variables
      */
-    protected $fillable = ['title','body'];
+    protected $fillable = ['title', 'body'];
     protected $dates = ['deleted_at'];
 
     /**
@@ -44,8 +44,9 @@ class Post extends Model implements HasMedia
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    
-    public function comments(){
+
+    public function comments()
+    {
         return $this->morphToMany(Comment::class, 'commentable');
     }
 
@@ -57,7 +58,7 @@ class Post extends Model implements HasMedia
     /**get all Function */
     public function allPosts($limit)
     {
-         
+
         return PostResource::collection(Post::all()->take($limit)->sortDesc());
     }
 
