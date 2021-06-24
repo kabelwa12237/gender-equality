@@ -17,6 +17,7 @@ class CreateReportsTable extends Migration
             $table->id();
             
             $table->string("body");
+            $table->string("media_type");
             $table->double("latitude");
             $table->double("longitude");
 

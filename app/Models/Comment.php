@@ -35,6 +35,10 @@ class Comment extends Model
         return $this->morphToMany(Comment::class, 'commentable');
     }
 
+    public function comment(){
+        return $this->morphByMany(Comment::class, 'commentable');
+    }
+
 
     /**
      * Business Logic

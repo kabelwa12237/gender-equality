@@ -20,7 +20,7 @@ class Report extends Model implements HasMedia
     /**
      * Variables
      */
-    protected $fillable = ['body', 'latitude', 'longitude'];
+    protected $fillable = ['body', 'latitude', 'longitude', 'media_type'];
     protected $dates = ['deleted_at'];
 
 
@@ -35,7 +35,7 @@ class Report extends Model implements HasMedia
     /**
      * Get all of the users that are assigned this report.
      */
-    public function users()
+    public function user()
     {
         return $this->morphedByMany(User::class, 'reportable');
     }
@@ -94,7 +94,9 @@ class Report extends Model implements HasMedia
         $validator = Validator::make($request->all(), [
             'body' => 'required',
             'latitude' => 'required',
-            'longitude' => 'required'
+            'longitude' => 'required',
+        
+
         ]);
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors(), 'status' => false], 300);
@@ -104,7 +106,11 @@ class Report extends Model implements HasMedia
         $report->body = $request->body;
         $report->latitude = $request->latitude;
         $report->longitude = $request->longitude;
-        $report->save();
+        $report->media_type = $request->media_type;
+
+        auth()->user()->reports()->save($report);
+
+         
 
         /**call event */
         event(new ReportSubmitted($report));

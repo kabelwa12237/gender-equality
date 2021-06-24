@@ -16,11 +16,13 @@ class ReportResource extends JsonResource
     {
         return [
             'id'=>$this->id,
-            'body'=>$this->body,
+            'caption'=>$this->body,
             'latitude'=>$this->latitude,
             'longitude'=>$this->longitude,
             'organizations'=>$this->organizations,
+             'user'=>$this->user,
             'media'=>$this-> getMedia(),
+            'media_type'=>$this->media_type,
             'time'=>$this->created_at->diffForHumans(),
 
         ];

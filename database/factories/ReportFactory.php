@@ -23,8 +23,10 @@ class ReportFactory extends Factory
     {
         return [
             'body'=> $this->faker->text(),
+            'media_type'=>$this->faker->randomElement(["audio", "video", "image", "text"]),
             'latitude'=> $this->faker->latitude(),
-            'longitude'=> $this->faker->longitude(),
+            'longitude'=> $this->faker->longitude()
+
         ];
     }
 }

@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
-    /**Controller */
+    /**Constructor */
     private $post;
 
     public function __construct()

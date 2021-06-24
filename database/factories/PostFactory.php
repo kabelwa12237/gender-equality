@@ -24,6 +24,7 @@ class PostFactory extends Factory
         return [
             'title'=> $this->faker->text(),
             'body'=> $this->faker->paragraph(),
+            
             'user_id'=>$this->faker->randomElement([1,2,3])
 
         ];
