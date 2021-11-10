@@ -16,7 +16,8 @@ class CreateReportsTable extends Migration
         Schema::create('reports', function (Blueprint $table) {
             $table->id();
             
-            $table->string("body");
+            $table->string("body")->nullable();
+            
             $table->string("media_type");
             $table->double("latitude");
             $table->double("longitude");

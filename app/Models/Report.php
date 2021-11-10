@@ -92,10 +92,10 @@ class Report extends Model implements HasMedia
     public function postReport($request)
     {
         $validator = Validator::make($request->all(), [
-            'body' => 'required',
+
             'latitude' => 'required',
             'longitude' => 'required',
-        
+
 
         ]);
         if ($validator->fails()) {
@@ -110,16 +110,16 @@ class Report extends Model implements HasMedia
 
         auth()->user()->reports()->save($report);
 
-         
+
 
         /**call event */
         event(new ReportSubmitted($report));
 
-        if($request->hasFile('media_file')){
+        if ($request->hasFile('media_file')) {
             $report
-               ->addMedia($request->file('media_file'))
-               ->preservingOriginal()
-               ->toMediaCollection();
+                ->addMedia($request->file('media_file'))
+                ->preservingOriginal()
+                ->toMediaCollection();
         }
 
         return new ReportResource($report);

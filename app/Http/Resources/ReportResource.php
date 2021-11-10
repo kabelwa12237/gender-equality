@@ -21,7 +21,7 @@ class ReportResource extends JsonResource
             'longitude'=>$this->longitude,
             'organizations'=>$this->organizations,
              'user'=>$this->user,
-            'media'=>$this-> getMedia(),
+            'media'=>$this-> getFirstMediaUrl(),
             'media_type'=>$this->media_type,
             'time'=>$this->created_at->diffForHumans(),
 
